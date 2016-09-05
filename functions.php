@@ -11,3 +11,5 @@ function react_scripts() {
 	));
 }
 add_action( 'wp_enqueue_scripts', 'react_scripts' );
+
+add_theme_support( 'post-thumbnails' );
