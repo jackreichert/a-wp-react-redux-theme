@@ -27175,11 +27175,15 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'header',
-	        null,
+	        { className: 'row' },
 	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/' },
-	          'Jack\'s Place'
+	          'h1',
+	          null,
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/' },
+	            'Jack\'s Place'
+	          )
 	        )
 	      );
 	    }
