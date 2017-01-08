@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class Footer extends React.Component {
+export default class Footer extends Component {
   getYear() {
     var date = new Date();
     return date.getFullYear();
   }
+  
   render() {
     return (
       <footer>

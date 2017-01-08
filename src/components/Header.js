@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-class Header extends React.Component {
+class Header extends Component {
   render() {
     return (
       <header className="row">

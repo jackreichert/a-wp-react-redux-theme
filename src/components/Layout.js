@@ -1,9 +1,10 @@
-import React from 'react';
-import Header from './Header';
-import Main from './Main';
-import Footer from './Footer';
+import React, { Component } from 'react';
 
-export default class Layout extends React.Component {
+import Header from './header';
+import Main from '../containers/main';
+import Footer from './footer';
+
+export default class Layout extends Component {
   render() {
     return (
       <section>

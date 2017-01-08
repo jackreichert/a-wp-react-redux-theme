@@ -5,8 +5,8 @@ add_action( 'rest_api_init', function () {
 	register_rest_route( $namespace, '/url/(?P<url>.*?)', array(
 		'methods' => 'GET',
 		'callback' => 'get_id_for_url',
-	) );
-} );
+	));
+});
 
 /**
  * Grab latest post title by an author!

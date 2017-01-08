@@ -1,8 +1,9 @@
-import React from 'react';
-import Title from './Article/Title';
-import Content from './Article/Content';
+import React, { Component } from 'react';
 
-export default class Article extends React.Component {
+import Title from './article/title';
+import Content from './article/content';
+
+export default class Article extends Component {
   static get defaultProps() {
     return {
       title: "Hello, world!",
@@ -13,7 +14,7 @@ export default class Article extends React.Component {
   render() {
     return (
         <article>
-          <Title>
+          <Title link={this.props.link}>
             {this.props.title}
           </Title>
           <Content>

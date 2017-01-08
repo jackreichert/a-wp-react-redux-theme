@@ -1,7 +1,7 @@
-import React from 'react';
-import {Link} from 'react-router';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
 
-export default class PageNav extends React.Component {
+export default class PageNav extends Component {
 
 	getPrevPage() {
 		if (parseInt(this.props.pageNum) > 2) {
