@@ -5,7 +5,7 @@ export default class PageNav extends Component {
 
 	getPrevPage() {
 		if (parseInt(this.props.pageNum) > 2) {
-			return `/p/${parseInt(this.props.pageNum) - 1}`;
+			return `/page/${parseInt(this.props.pageNum) - 1}`;
 		} else {
 			return `/`;
 		}
@@ -13,7 +13,7 @@ export default class PageNav extends Component {
 	}
 
 	getNextPage() {
-		return `/p/${parseInt(this.props.pageNum) + 1}`;
+		return `/page/${parseInt(this.props.pageNum) + 1}`;
 	}
 
 	render() {

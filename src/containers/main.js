@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions/index';
+import { fetchPosts, fetchPost } from '../actions/index';
 import Article from '../components/main/article';
 import PageNav from '../components/main/pageNav';
 
@@ -11,9 +11,19 @@ class Main extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		if ( this.props.pageNum !== nextProps.pageNum ) {
+		if ( this.isRequestPrettyPermalink(nextProps) ) {
+			this.props.fetchPost(nextProps.prettyPermalink);
+		} else if ( this.isRequestForIndex(nextProps) ) {
 			this.props.fetchPosts(nextProps.pageNum);
 		}
+	}
+
+	isRequestPrettyPermalink(nextProps) {
+		return this.props.prettyPermalink !== nextProps.prettyPermalink && 'undefined' !== typeof nextProps.prettyPermalink;
+	}
+
+	isRequestForIndex(nextProps) {
+		return this.props.pageNum !== nextProps.pageNum || 'undefined' !== typeof this.props.prettyPermalink && 'undefined' === typeof nextProps.prettyPermalink;
 	}
 
 	componentWillMount() {
@@ -40,4 +50,4 @@ function mapStateToProps({posts}) {
 	return { posts };
 }
 
-export default connect(mapStateToProps, { fetchPosts })(Main);
+export default connect(mapStateToProps, { fetchPosts, fetchPost })(Main);

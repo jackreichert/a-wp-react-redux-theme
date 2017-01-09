@@ -9,7 +9,7 @@ export default class Layout extends Component {
     return (
       <section>
         <Header />
-        <Main pageNum={this.props.params.pageNum || 1} />
+        <Main pageNum={this.props.params.pageNum || 1} prettyPermalink={this.props.params.splat} />
         <Footer />
       </section>
     );
