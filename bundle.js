@@ -30358,7 +30358,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'article',
-	        null,
+	        { className: 'col-md-12' },
 	        _react2.default.createElement(
 	          _title2.default,
 	          { link: this.props.link },

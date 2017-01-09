@@ -13,7 +13,7 @@ export default class Article extends Component {
 
   render() {
     return (
-        <article>
+        <article className="col-md-12">
           <Title link={this.props.link}>
             {this.props.title}
           </Title>
