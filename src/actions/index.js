@@ -4,7 +4,7 @@ export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
-const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/url/`;
+const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 
 export function fetchPosts(pageNum=1, post_type='posts') {
   return function(dispatch) {

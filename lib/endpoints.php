@@ -2,7 +2,7 @@
 
 add_action( 'rest_api_init', function () {
   $namespace = 'react-theme/v1';
-	register_rest_route( $namespace, '/url/(?P<url>.*?)', array(
+	register_rest_route( $namespace, '/prettyPermalink/(?P<url>.*?)', array(
 		'methods' => 'GET',
 		'callback' => 'get_post_for_url',
 	));

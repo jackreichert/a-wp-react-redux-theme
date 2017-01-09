@@ -28796,7 +28796,7 @@
 	var FETCH_POST = exports.FETCH_POST = 'FETCH_POST';
 
 	var WP_API_ENDPOINT = RT_API.root + 'wp/v2/';
-	var PRETTYPERMALINK_ENDPOINT = RT_API.root + 'react-theme/v1/url/';
+	var PRETTYPERMALINK_ENDPOINT = RT_API.root + 'react-theme/v1/prettyPermalink/';
 
 	function fetchPosts() {
 	  var pageNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
