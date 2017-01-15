@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {connect} from 'react-redux';
+
 import {fetchPosts, fetchPost} from '../actions/index';
 import Article from '../components/main/article';
 import PageNav from '../components/main/pageNav';
 
 class Main extends Component {
-    componentDidUpdate() {
+    componentWillUpdate() {
         window.scrollTo(0, 0);
     }
 
@@ -41,13 +43,16 @@ class Main extends Component {
     }
 
     render() {
-        return (<main>
-            <div className="row">
-                {this.renderPosts(this.props.posts)}
-            </div>
-
-            <PageNav pageNum={this.props.pageNum} shouldRender={1 < this.props.posts.length}/>
-        </main>);
+        return (
+            <main className="row">
+                <ReactCSSTransitionGroup
+                    transitionName="fade"
+                    transitionEnterTimeout={1000}
+                    transitionLeaveTimeout={200}>
+                    {this.renderPosts(this.props.posts)}
+                </ReactCSSTransitionGroup>
+                <PageNav pageNum={this.props.pageNum} shouldRender={1 < this.props.posts.length}/>
+            </main>);
     }
 }
 

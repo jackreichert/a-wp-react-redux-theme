@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
-<main id="react-main" class="container-fluid">
+<div id="react-main">
 	I guess you don't care about progress, do you?
-</main>
+</div>
 
 <?php get_footer(); ?>

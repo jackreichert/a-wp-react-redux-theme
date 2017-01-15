@@ -11,13 +11,14 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 		}
 
 		function init() {
-			$this->support();
-			$this->remove_junk();
+			$this->hooks();
 			$this->menus();
 		}
 
-		private function support() {
+		private function hooks() {
+			$this->remove_junk();
 			add_theme_support( 'post-thumbnails' );
+			add_action( 'widgets_init', [ $this, 'widgets_init' ] );
 		}
 
 		private function remove_junk() {
@@ -40,8 +41,19 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 
 		private function menus() {
 			register_nav_menus( array(
-				'main_menu' => 'Main Menu',
+				'main_menu'   => 'Main Menu',
 				'footer_menu' => 'Footer Menu',
+			) );
+		}
+
+		function widgets_init() {
+			register_sidebar( array(
+				'name'          => 'Main Sidebar',
+				'id'            => 'main_sidebar',
+				'before_widget' => '<div>',
+				'after_widget'  => '</div>',
+				'before_title'  => '<h2 class="rounded">',
+				'after_title'   => '</h2>',
 			) );
 		}
 	}
