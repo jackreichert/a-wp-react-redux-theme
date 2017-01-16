@@ -2,26 +2,3 @@
 Theme Name: React theme
 Author: Jack Reichert
 */
-
-.fade-enter {
-    opacity: 0;
-}
-
-.fade-enter-active {
-    opacity: 1.0;
-    transition: 0.5s ease-in all;
-}
-
-.fade-leave {
-    opacity: 1.0;
-}
-
-.fade-leave-active {
-    opacity: 0;
-    transition: .01s ease-in all;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}

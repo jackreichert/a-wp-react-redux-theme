@@ -68,6 +68,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(332);
+
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
 	    { store: _store2.default },
@@ -34135,7 +34137,7 @@
 
 	var _posts_reducer2 = _interopRequireDefault(_posts_reducer);
 
-	var _menu_reducer = __webpack_require__(332);
+	var _menu_reducer = __webpack_require__(331);
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
@@ -34172,8 +34174,7 @@
 	var _actions = __webpack_require__(273);
 
 /***/ },
-/* 331 */,
-/* 332 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34194,6 +34195,12 @@
 	};
 
 	var _actions = __webpack_require__(273);
+
+/***/ },
+/* 332 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

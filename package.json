@@ -16,6 +16,10 @@
     "babel-preset-es2015": "^6.18",
     "babel-preset-react": "^6.16",
     "babel-preset-stage-2": "^6.18",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "node-sass": "^4.3.0",
+    "postcss-loader": "^1.2.2",
     "react": "^15.4",
     "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "^15.4",
@@ -25,6 +29,8 @@
     "redux-logger": "^2.7.4",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.1.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
     "webpack": "^1.14"
   }
 }

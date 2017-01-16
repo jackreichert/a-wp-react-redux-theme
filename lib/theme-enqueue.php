@@ -27,7 +27,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'nonce' => wp_create_nonce( 'wp_rest' ),
 				'siteName' => get_bloginfo('name')
 			) );
-			wp_enqueue_style(get_stylesheet(),get_stylesheet_uri());
+			wp_enqueue_style(get_stylesheet(),get_template_directory_uri() . '/bundle.css');
 		}
 	}
 
