@@ -12,11 +12,15 @@ class Main extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("componentWillReceiveProps", this.props, nextProps);
         if (this.isRequestPrettyPermalink(nextProps)) {
+            console.log('isRequestPrettyPermalink');
             this.props.fetchPost(nextProps.prettyPermalink);
         } else if (this.isSearchRequest(nextProps)) {
+            console.log('isSearchRequest');
             this.props.searchSite(nextProps.searchTerm);
         } else if (this.isRequestForIndex(nextProps)) {
+            console.log('isRequestForIndex');
             this.props.fetchPosts(nextProps.pageNum);
         }
     }
@@ -31,7 +35,8 @@ class Main extends Component {
 
     isRequestForIndex(nextProps) {
         return this.props.pageNum !== nextProps.pageNum
-            || ('undefined' === typeof nextProps.prettyPermalink && 'undefined' === typeof nextProps.searchTerm);
+            || ('undefined' === typeof nextProps.prettyPermalink && 'undefined' === typeof nextProps.searchTerm)
+            && (this.props.prettyPermalink !== nextProps.prettyPermalink || this.props.searchTerm !== nextProps.searchTerm);
     }
 
     componentWillMount() {
