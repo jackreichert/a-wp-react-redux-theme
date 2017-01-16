@@ -9,7 +9,7 @@ export default class Footer extends Component {
 
     render() {
         return (
-            <footer>
+            <footer className="row">
                 <Menu name="footer_menu"/>
                 &copy; {this.getYear()} Jack Reichert
             </footer>

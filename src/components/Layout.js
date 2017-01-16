@@ -9,7 +9,7 @@ export default class Layout extends Component {
         return (
             <section className="container-fluid">
                 <Header />
-                <Main pageNum={this.props.params.pageNum || 1} prettyPermalink={this.props.params.splat}/>
+                <Main pageNum={this.props.params.pageNum || 1} prettyPermalink={this.props.params.splat} searchTerm={this.props.params.term}/>
                 <Footer />
             </section>
         );

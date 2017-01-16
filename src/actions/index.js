@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
+export const SEARCH_POSTS = 'SEARCH_POSTS';
 export const FETCH_MENU = 'FETCH_MENU';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
@@ -41,5 +42,17 @@ export function fetchMenu(menu) {
                     payload: {items: response.data, name: menu}
                 });
             });
+    }
+}
+
+export function searchSite(term, post_type = 'posts') {
+    return function (dispatch) {
+        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&search=${term}`)
+            .then(response => {
+                dispatch({
+                    type: SEARCH_POSTS,
+                    payload: response.data
+                });
+            })
     }
 }

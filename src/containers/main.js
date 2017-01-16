@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {connect} from 'react-redux';
 
-import {fetchPosts, fetchPost} from '../actions/index';
+import {fetchPosts, fetchPost, searchSite} from '../actions/index';
 import Article from '../components/main/article';
 import PageNav from '../components/main/pageNav';
 
@@ -14,9 +14,15 @@ class Main extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.isRequestPrettyPermalink(nextProps)) {
             this.props.fetchPost(nextProps.prettyPermalink);
+        } else if (this.isSearchRequest(nextProps)) {
+            this.props.searchSite(nextProps.searchTerm);
         } else if (this.isRequestForIndex(nextProps)) {
             this.props.fetchPosts(nextProps.pageNum);
         }
+    }
+
+    isSearchRequest(nextProps) {
+        return 'undefined' !== typeof nextProps.searchTerm && this.props.searchTerm !== nextProps.searchTerm && 2 < nextProps.searchTerm.length;
     }
 
     isRequestPrettyPermalink(nextProps) {
@@ -24,7 +30,8 @@ class Main extends Component {
     }
 
     isRequestForIndex(nextProps) {
-        return this.props.pageNum !== nextProps.pageNum || 'undefined' !== typeof this.props.prettyPermalink && 'undefined' === typeof nextProps.prettyPermalink;
+        return this.props.pageNum !== nextProps.pageNum
+            || ('undefined' === typeof nextProps.prettyPermalink && 'undefined' === typeof nextProps.searchTerm);
     }
 
     componentWillMount() {
@@ -44,11 +51,11 @@ class Main extends Component {
 
     render() {
         return (
-            <main className="row">
+            <main id="postsContainer" className="row">
                 <ReactCSSTransitionGroup
                     transitionName="fade"
-                    transitionEnterTimeout={1000}
-                    transitionLeaveTimeout={200}>
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={1}>
                     {this.renderPosts(this.props.posts)}
                 </ReactCSSTransitionGroup>
                 <PageNav pageNum={this.props.pageNum} shouldRender={1 < this.props.posts.length}/>
@@ -60,4 +67,4 @@ function mapStateToProps({posts}) {
     return {posts};
 }
 
-export default connect(mapStateToProps, {fetchPosts, fetchPost})(Main);
+export default connect(mapStateToProps, {fetchPosts, fetchPost, searchSite})(Main);

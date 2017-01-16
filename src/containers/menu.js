@@ -32,7 +32,7 @@ class Menu extends Component {
 
     render() {
         return (
-            <nav>
+            <nav className="row">
                 <ul className="nav navbar-nav">
                     {this.renderMenu(this.props.menu)}
                 </ul>

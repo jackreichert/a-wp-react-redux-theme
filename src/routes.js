@@ -7,6 +7,7 @@ export default (
     <Route path="/">
         <IndexRoute component={Layout}/>
         <Route path="page/:pageNum" component={Layout} addHandlerKey={true}/>
+        <Route path="search/:term" component={Layout}/>
         <Route path="*" component={Layout}/>
     </Route>
 );
