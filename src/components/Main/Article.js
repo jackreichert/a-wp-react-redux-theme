@@ -11,15 +11,35 @@ export default class Article extends Component {
         }
     }
 
+    getClasses(piece) {
+        switch (piece) {
+            case 'article':
+                return this.props.isSingle ? 'card single w-75' : 'card archive';
+        }
+    }
+
+    renderFeaturedImage() {
+        if (this.props.featuredImage) {
+            return this.props.isSingle ?
+                <img src={this.props.featuredImage.large} className="card-img-top img-fluid"/> :
+                <img src={this.props.featuredImage.full} className="card-img-top img-fluid"/>;
+        } else {
+            return '';
+        }
+    }
+
     render() {
         return (
-            <article className="col-md-3 col-sm-4 col-xs-12">
-                <Title link={this.props.link}>
-                    {this.props.title}
-                </Title>
-                <Content>
-                    {this.props.content}
-                </Content>
+            <article className={this.getClasses('article')}>
+                {this.renderFeaturedImage()}
+                <div className="card-block">
+                    <Title link={this.props.link} isSingle={this.props.isSingle}>
+                        {this.props.title}
+                    </Title>
+                    <Content isSingle={this.props.isSingle}>
+                        {this.props.content}
+                    </Content>
+                </div>
             </article>
         );
     }

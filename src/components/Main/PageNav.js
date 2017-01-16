@@ -23,16 +23,16 @@ export default class PageNav extends Component {
 
         var previousButton = '';
         if (1 < this.props.pageNum) {
-            previousButton = <Link to={this.getPrevPage()} className="btn btn-primary pull-right">Previous</Link>;
+            previousButton = <Link to={this.getPrevPage()} className="nav-link btn btn-primary">Previous</Link>;
         }
 
         return (
-            <div className="row">
-                <div className="col-xs-1 col-xs-offset-4">
+            <div className="nav justify-content-center">
+                <div className="nav-item">
                     {previousButton}
-                </div>
-                <div className="col-xs-1 col-xs-offset-1">
-                    <Link to={this.getNextPage()} className="btn btn-primary">Next</Link>
+                </div>&nbsp;
+                <div className="nav-item">
+                    <Link to={this.getNextPage()} className="nav-link btn btn-primary">Next</Link>
                 </div>
             </div>
         );

@@ -12,17 +12,21 @@ class Main extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("componentWillReceiveProps", this.props, nextProps);
         if (this.isRequestPrettyPermalink(nextProps)) {
-            console.log('isRequestPrettyPermalink');
             this.props.fetchPost(nextProps.prettyPermalink);
         } else if (this.isSearchRequest(nextProps)) {
-            console.log('isSearchRequest');
             this.props.searchSite(nextProps.searchTerm);
         } else if (this.isRequestForIndex(nextProps)) {
-            console.log('isRequestForIndex');
             this.props.fetchPosts(nextProps.pageNum);
         }
+    }
+
+    isSingle() {
+        return 1 === this.props.posts.length;
+    }
+
+    getContentOrExcerpt(post) {
+        return this.isSingle() ? post.content.rendered : post.excerpt.rendered;
     }
 
     isSearchRequest(nextProps) {
@@ -49,22 +53,29 @@ class Main extends Component {
 
     renderPosts(posts) {
         return posts.map(post => {
-            return <Article key={post.id} title={post.title.rendered} content={post.content.rendered}
-                            link={post.link}/>;
+            return <Article key={post.id} title={post.title.rendered} content={this.getContentOrExcerpt(post)}
+                            link={post.link} isSingle={this.isSingle()} featuredImage={post.featured_image_url}/>;
         });
+    }
+
+    getClasses() {
+        return this.isSingle() ? '' : 'card-columns';
     }
 
     render() {
         return (
-            <main id="postsContainer" className="row">
-                <ReactCSSTransitionGroup
-                    transitionName="fade"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={1}>
-                    {this.renderPosts(this.props.posts)}
-                </ReactCSSTransitionGroup>
+            <div>
+                <main id="postsContainer" className={this.getClasses()}>
+                    <ReactCSSTransitionGroup
+                        transitionName="fade"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={1}>
+                        {this.renderPosts(this.props.posts)}
+                    </ReactCSSTransitionGroup>
+                </main>
                 <PageNav pageNum={this.props.pageNum} shouldRender={1 < this.props.posts.length}/>
-            </main>);
+            </div>
+        );
     }
 }
 

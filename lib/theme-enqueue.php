@@ -16,8 +16,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 		}
 
 		function bootstrap() {
-			wp_enqueue_style( 'bootstrap3.3.7-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', [], '3.3.7' );
-			wp_enqueue_script( 'bootstrap-native-js', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/1.1.0/bootstrap-native.min.js', [], '1.1.0', true );
+			wp_enqueue_style( 'bootstrap4-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css', [], '3.3.7' );
 		}
 
 		function theme() {

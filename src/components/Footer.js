@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import Menu from '../containers/menu';
 
 export default class Footer extends Component {
@@ -9,9 +10,9 @@ export default class Footer extends Component {
 
     render() {
         return (
-            <footer className="row">
+            <footer>
                 <Menu name="footer_menu"/>
-                &copy; {this.getYear()} Jack Reichert
+                <div className="clearfix copy">&copy; {this.getYear()} {RT_API.siteName}</div>
             </footer>
         );
     }

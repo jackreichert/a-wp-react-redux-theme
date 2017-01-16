@@ -15,7 +15,7 @@ class Menu extends Component {
     renderMenu(menu) {
         return menu.items.map(item => {
             return (
-                <li key={item.ID}>
+                <li key={item.ID} className="nav-item">
                     <Link className="nav-link" to={Menu.getRelativeUrl(item.url)}>{item.title}</Link>
                 </li>
             );
@@ -30,13 +30,22 @@ class Menu extends Component {
         return url.substr(window.location.origin.length);
     }
 
+    getClasses(location=''){
+        switch(location) {
+            case 'main_menu':
+                return 'navbar-nav mr-auto';
+            case 'footer_menu':
+                return 'nav justify-content-center';
+            default:
+                return '';
+        }
+    }
+
     render() {
         return (
-            <nav className="row">
-                <ul className="nav navbar-nav">
-                    {this.renderMenu(this.props.menu)}
-                </ul>
-            </nav>
+            <ul className={this.getClasses(this.props.menu.name)}>
+                {this.renderMenu(this.props.menu)}
+            </ul>
         );
     }
 }

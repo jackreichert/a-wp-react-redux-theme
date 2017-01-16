@@ -17,6 +17,9 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 			$Menus_Endpoint = new Menus_Endpoint();
 			$Menus_Endpoint->init();
 
+			$Add_Featured_Image_Endpoint = new Add_Featured_Image_Endpoint();
+			$Add_Featured_Image_Endpoint->init();
+
 		}
 	}
 

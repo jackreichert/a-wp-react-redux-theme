@@ -68,7 +68,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(332);
+	__webpack_require__(333);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28655,26 +28655,29 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'header',
-	                { className: 'row' },
+	                { className: 'navbar navbar-toggleable-sm navbar-light bg-faded' },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
+	                    'button',
+	                    { className: 'navbar-toggler navbar-toggler-right', type: 'button', 'data-toggle': 'collapse',
+	                        'data-target': '#navbarSupportedContent', 'aria-controls': 'navbarSupportedContent',
+	                        'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
+	                    _react2.default.createElement('span', { className: 'navbar-toggler-icon' })
+	                ),
+	                _react2.default.createElement(
+	                    'h1',
+	                    { className: 'navbar-brand' },
 	                    _react2.default.createElement(
-	                        'h1',
-	                        { className: 'col-sm-8' },
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/' },
-	                            RT_API.siteName
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-sm-4' },
-	                        _react2.default.createElement(_search2.default, null)
+	                        _reactRouter.Link,
+	                        { to: '/' },
+	                        RT_API.siteName
 	                    )
 	                ),
-	                _react2.default.createElement(_menu2.default, { name: 'main_menu' })
+	                _react2.default.createElement(
+	                    'nav',
+	                    { className: 'collapse navbar-collapse' },
+	                    _react2.default.createElement(_menu2.default, { name: 'main_menu' }),
+	                    _react2.default.createElement(_search2.default, null)
+	                )
 	            );
 	        }
 	    }]);
@@ -28739,7 +28742,7 @@
 	            return menu.items.map(function (item) {
 	                return _react2.default.createElement(
 	                    'li',
-	                    { key: item.ID },
+	                    { key: item.ID, className: 'nav-item' },
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
 	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
@@ -28749,16 +28752,26 @@
 	            });
 	        }
 	    }, {
+	        key: 'getClasses',
+	        value: function getClasses() {
+	            var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+	            switch (location) {
+	                case 'main_menu':
+	                    return 'navbar-nav mr-auto';
+	                case 'footer_menu':
+	                    return 'nav justify-content-center';
+	                default:
+	                    return '';
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'nav',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                    'ul',
-	                    { className: 'nav navbar-nav' },
-	                    this.renderMenu(this.props.menu)
-	                )
+	                'ul',
+	                { className: this.getClasses(this.props.menu.name) },
+	                this.renderMenu(this.props.menu)
 	            );
 	        }
 	    }], [{
@@ -30406,12 +30419,12 @@
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
-	                { className: 'input-group' },
-	                _react2.default.createElement('input', { type: 'text',
+	                'form',
+	                { className: 'form-inline my-2 my-lg-0' },
+	                _react2.default.createElement('input', { type: 'search',
 	                    value: this.props.term,
 	                    onChange: this.handleSearch.bind(this),
-	                    className: 'form-control',
+	                    className: 'form-control mr-sm-2',
 	                    placeholder: 'Search for...' })
 	            );
 	        }
@@ -30483,17 +30496,23 @@
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
-	            console.log("componentWillReceiveProps", this.props, nextProps);
 	            if (this.isRequestPrettyPermalink(nextProps)) {
-	                console.log('isRequestPrettyPermalink');
 	                this.props.fetchPost(nextProps.prettyPermalink);
 	            } else if (this.isSearchRequest(nextProps)) {
-	                console.log('isSearchRequest');
 	                this.props.searchSite(nextProps.searchTerm);
 	            } else if (this.isRequestForIndex(nextProps)) {
-	                console.log('isRequestForIndex');
 	                this.props.fetchPosts(nextProps.pageNum);
 	            }
+	        }
+	    }, {
+	        key: 'isSingle',
+	        value: function isSingle() {
+	            return 1 === this.props.posts.length;
+	        }
+	    }, {
+	        key: 'getContentOrExcerpt',
+	        value: function getContentOrExcerpt(post) {
+	            return this.isSingle() ? post.content.rendered : post.excerpt.rendered;
 	        }
 	    }, {
 	        key: 'isSearchRequest',
@@ -30522,24 +30541,35 @@
 	    }, {
 	        key: 'renderPosts',
 	        value: function renderPosts(posts) {
+	            var _this2 = this;
+
 	            return posts.map(function (post) {
-	                return _react2.default.createElement(_article2.default, { key: post.id, title: post.title.rendered, content: post.content.rendered,
-	                    link: post.link });
+	                return _react2.default.createElement(_article2.default, { key: post.id, title: post.title.rendered, content: _this2.getContentOrExcerpt(post),
+	                    link: post.link, isSingle: _this2.isSingle(), featuredImage: post.featured_image_url });
 	            });
+	        }
+	    }, {
+	        key: 'getClasses',
+	        value: function getClasses() {
+	            return this.isSingle() ? '' : 'card-columns';
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'main',
-	                { id: 'postsContainer', className: 'row' },
+	                'div',
+	                null,
 	                _react2.default.createElement(
-	                    _reactAddonsCssTransitionGroup2.default,
-	                    {
-	                        transitionName: 'fade',
-	                        transitionEnterTimeout: 500,
-	                        transitionLeaveTimeout: 1 },
-	                    this.renderPosts(this.props.posts)
+	                    'main',
+	                    { id: 'postsContainer', className: this.getClasses() },
+	                    _react2.default.createElement(
+	                        _reactAddonsCssTransitionGroup2.default,
+	                        {
+	                            transitionName: 'fade',
+	                            transitionEnterTimeout: 500,
+	                            transitionLeaveTimeout: 1 },
+	                        this.renderPosts(this.props.posts)
+	                    )
 	                ),
 	                _react2.default.createElement(_pageNav2.default, { pageNum: this.props.pageNum, shouldRender: 1 < this.props.posts.length })
 	            );
@@ -32712,20 +32742,42 @@
 	    }
 
 	    _createClass(Article, [{
+	        key: 'getClasses',
+	        value: function getClasses(piece) {
+	            switch (piece) {
+	                case 'article':
+	                    return this.props.isSingle ? 'card single w-75' : 'card archive';
+	            }
+	        }
+	    }, {
+	        key: 'renderFeaturedImage',
+	        value: function renderFeaturedImage() {
+	            if (this.props.featuredImage) {
+	                return this.props.isSingle ? _react2.default.createElement('img', { src: this.props.featuredImage.large, className: 'card-img-top img-fluid' }) : _react2.default.createElement('img', { src: this.props.featuredImage.full, className: 'card-img-top img-fluid' });
+	            } else {
+	                return '';
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'article',
-	                { className: 'col-md-3 col-sm-4 col-xs-12' },
+	                { className: this.getClasses('article') },
+	                this.renderFeaturedImage(),
 	                _react2.default.createElement(
-	                    _title2.default,
-	                    { link: this.props.link },
-	                    this.props.title
-	                ),
-	                _react2.default.createElement(
-	                    _content2.default,
-	                    null,
-	                    this.props.content
+	                    'div',
+	                    { className: 'card-block' },
+	                    _react2.default.createElement(
+	                        _title2.default,
+	                        { link: this.props.link, isSingle: this.props.isSingle },
+	                        this.props.title
+	                    ),
+	                    _react2.default.createElement(
+	                        _content2.default,
+	                        { isSingle: this.props.isSingle },
+	                        this.props.content
+	                    )
 	                )
 	            );
 	        }
@@ -32780,15 +32832,29 @@
 	    }
 
 	    _createClass(Title, [{
+	        key: 'extractPath',
+	        value: function extractPath(link) {
+	            var url = document.createElement('a');
+	            url.href = link;
+
+	            return link.replace(url.protocol + '//' + url.host, '');
+	        }
+	    }, {
+	        key: 'getClasses',
+	        value: function getClasses() {
+	            return this.props.isSingle ? '' : 'card-title';
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'header',
-	                null,
+	                { className: this.getClasses() },
 	                _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: extractPath(this.props.link) },
-	                    _react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: this.props.children } })
+	                    { to: this.extractPath(this.props.link) },
+	                    _react2.default.createElement('h1', {
+	                        dangerouslySetInnerHTML: { __html: this.props.children } })
 	                )
 	            );
 	        }
@@ -32799,19 +32865,11 @@
 
 	exports.default = Title;
 
-
-	function extractPath(link) {
-	    var url = document.createElement('a');
-	    url.href = link;
-
-	    return link.replace(url.protocol + '//' + url.host, '');
-	}
-
 /***/ },
 /* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -32841,9 +32899,9 @@
 	    }
 
 	    _createClass(Content, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
-	            return _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.children } });
+	            return _react2.default.createElement("div", { className: "card-text", dangerouslySetInnerHTML: { __html: this.props.children } });
 	        }
 	    }]);
 
@@ -32912,25 +32970,26 @@
 	            if (1 < this.props.pageNum) {
 	                previousButton = _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: this.getPrevPage(), className: 'btn btn-primary pull-right' },
+	                    { to: this.getPrevPage(), className: 'nav-link btn btn-primary' },
 	                    'Previous'
 	                );
 	            }
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
+	                { className: 'nav justify-content-center' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-xs-1 col-xs-offset-4' },
+	                    { className: 'nav-item' },
 	                    previousButton
 	                ),
+	                '\xA0',
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-xs-1 col-xs-offset-1' },
+	                    { className: 'nav-item' },
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: this.getNextPage(), className: 'btn btn-primary' },
+	                        { to: this.getNextPage(), className: 'nav-link btn btn-primary' },
 	                        'Next'
 	                    )
 	                )
@@ -32991,11 +33050,16 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'footer',
-	                { className: 'row' },
+	                null,
 	                _react2.default.createElement(_menu2.default, { name: 'footer_menu' }),
-	                '\xA9 ',
-	                this.getYear(),
-	                ' Jack Reichert'
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'clearfix copy' },
+	                    '\xA9 ',
+	                    this.getYear(),
+	                    ' ',
+	                    RT_API.siteName
+	                )
 	            );
 	        }
 	    }]);
@@ -34197,7 +34261,8 @@
 	var _actions = __webpack_require__(273);
 
 /***/ },
-/* 332 */
+/* 332 */,
+/* 333 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
