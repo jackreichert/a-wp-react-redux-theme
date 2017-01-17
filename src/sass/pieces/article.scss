@@ -1,0 +1,14 @@
+article {
+  &.archive {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+  &.single {
+    margin: 1em auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
