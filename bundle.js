@@ -68,7 +68,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(333);
+	__webpack_require__(332);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28599,8 +28599,8 @@
 	            return _react2.default.createElement(
 	                'section',
 	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, null),
-	                _react2.default.createElement(_main2.default, { pageNum: this.props.params.pageNum || 1, prettyPermalink: this.props.params.splat, searchTerm: this.props.params.term }),
+	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term }),
+	                _react2.default.createElement(_main2.default, { routePath: this.props.route.path, pageNum: this.props.params.pageNum || 1, prettyPermalink: this.props.params.splat, searchTerm: this.props.params.term }),
 	                _react2.default.createElement(_footer2.default, null)
 	            );
 	        }
@@ -28676,7 +28676,7 @@
 	                    'nav',
 	                    { className: 'collapse navbar-collapse' },
 	                    _react2.default.createElement(_menu2.default, { name: 'main_menu' }),
-	                    _react2.default.createElement(_search2.default, null)
+	                    _react2.default.createElement(_search2.default, { searchTerm: this.props.term })
 	                )
 	            );
 	        }
@@ -30380,13 +30380,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(178);
-
-	var _redux = __webpack_require__(189);
-
 	var _reactRouter = __webpack_require__(216);
-
-	var _actions = __webpack_require__(273);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30402,12 +30396,13 @@
 	    function Search() {
 	        _classCallCheck(this, Search);
 
-	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
+	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
 	    }
 
 	    _createClass(Search, [{
 	        key: 'handleSearch',
 	        value: function handleSearch(event) {
+	            event.preventDefault();
 	            var term = event.target.value;
 	            if (2 < term.length) {
 	                _reactRouter.browserHistory.push('/search/' + term);
@@ -30416,11 +30411,16 @@
 	            }
 	        }
 	    }, {
+	        key: 'submit',
+	        value: function submit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'form',
-	                { className: 'form-inline my-2 my-lg-0' },
+	                { onSubmit: this.submit, className: 'form-inline my-2 my-lg-0' },
 	                _react2.default.createElement('input', { type: 'search',
 	                    value: this.props.term,
 	                    onChange: this.handleSearch.bind(this),
@@ -30433,11 +30433,7 @@
 	    return Search;
 	}(_react.Component);
 
-	function mapDispatchToProps(dispatch) {
-	    return (0, _redux.bindActionCreators)({ searchSite: _actions.searchSite, fetchPosts: _actions.fetchPosts }, dispatch);
-	}
-
-	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Search);
+	exports.default = Search;
 
 /***/ },
 /* 300 */
@@ -30489,20 +30485,43 @@
 	    }
 
 	    _createClass(Main, [{
-	        key: 'componentWillUpdate',
-	        value: function componentWillUpdate() {
-	            window.scrollTo(0, 0);
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getPosts(this.props, true);
 	        }
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
-	            if (this.isRequestPrettyPermalink(nextProps)) {
-	                this.props.fetchPost(nextProps.prettyPermalink);
-	            } else if (this.isSearchRequest(nextProps)) {
-	                this.props.searchSite(nextProps.searchTerm);
-	            } else if (this.isRequestForIndex(nextProps)) {
-	                this.props.fetchPosts(nextProps.pageNum);
+	            this.getPosts(nextProps);
+	        }
+	    }, {
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            switch (props.routePath) {
+	                case 'search/:term':
+	                    if (props.searchTerm !== this.props.searchTerm || willMount) {
+	                        this.props.searchSite(props.searchTerm);
+	                    }
+	                    break;
+	                case '*':
+	                    if (props.prettyPermalink !== this.props.prettyPermalink || willMount) {
+	                        this.props.fetchPost(props.prettyPermalink);
+	                    }
+	                    break;
+	                case 'page/:pageNum':
+	                default:
+	                    if (props.pageNum !== this.props.pageNum || willMount || props.routePath !== this.props.routePath) {
+	                        this.props.fetchPosts(props.pageNum);
+	                    }
+	                    break;
 	            }
+	        }
+	    }, {
+	        key: 'componentWillUpdate',
+	        value: function componentWillUpdate() {
+	            window.scrollTo(0, 0);
 	        }
 	    }, {
 	        key: 'isSingle',
@@ -30513,30 +30532,6 @@
 	        key: 'getContentOrExcerpt',
 	        value: function getContentOrExcerpt(post) {
 	            return this.isSingle() ? post.content.rendered : post.excerpt.rendered;
-	        }
-	    }, {
-	        key: 'isSearchRequest',
-	        value: function isSearchRequest(nextProps) {
-	            return 'undefined' !== typeof nextProps.searchTerm && this.props.searchTerm !== nextProps.searchTerm && 2 < nextProps.searchTerm.length;
-	        }
-	    }, {
-	        key: 'isRequestPrettyPermalink',
-	        value: function isRequestPrettyPermalink(nextProps) {
-	            return this.props.prettyPermalink !== nextProps.prettyPermalink && 'undefined' !== typeof nextProps.prettyPermalink;
-	        }
-	    }, {
-	        key: 'isRequestForIndex',
-	        value: function isRequestForIndex(nextProps) {
-	            return this.props.pageNum !== nextProps.pageNum || 'undefined' === typeof nextProps.prettyPermalink && 'undefined' === typeof nextProps.searchTerm && (this.props.prettyPermalink !== nextProps.prettyPermalink || this.props.searchTerm !== nextProps.searchTerm);
-	        }
-	    }, {
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            if ('undefined' !== typeof this.props.prettyPermalink) {
-	                this.props.fetchPost(this.props.prettyPermalink);
-	            } else {
-	                this.props.fetchPosts(this.props.pageNum);
-	            }
 	        }
 	    }, {
 	        key: 'renderPosts',
@@ -34261,8 +34256,7 @@
 	var _actions = __webpack_require__(273);
 
 /***/ },
-/* 332 */,
-/* 333 */
+/* 332 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
-import { searchSite, fetchPosts } from '../actions';
+import {browserHistory} from 'react-router';
 
-class Search extends Component {
-    constructor() {
-        super();
-    }
-
+export default class Search extends Component {
     handleSearch(event) {
+        event.preventDefault();
         const term = event.target.value;
         if (2 < term.length) {
             browserHistory.push(`/search/${term}`);
@@ -18,9 +12,13 @@ class Search extends Component {
         }
     }
 
+    submit(event) {
+        event.preventDefault();
+    }
+
     render() {
         return (
-            <form className="form-inline my-2 my-lg-0">
+            <form onSubmit={this.submit} className="form-inline my-2 my-lg-0">
                 <input type="search"
                        value={this.props.term}
                        onChange={this.handleSearch.bind(this)}
@@ -30,9 +28,3 @@ class Search extends Component {
         );
     }
 }
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ searchSite, fetchPosts }, dispatch);
-}
-
-export default connect(null,mapDispatchToProps)(Search);

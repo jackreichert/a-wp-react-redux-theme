@@ -7,18 +7,38 @@ import Article from '../components/main/article';
 import PageNav from '../components/main/pageNav';
 
 class Main extends Component {
-    componentWillUpdate() {
-        window.scrollTo(0, 0);
+
+    componentWillMount() {
+        this.getPosts(this.props, true);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.isRequestPrettyPermalink(nextProps)) {
-            this.props.fetchPost(nextProps.prettyPermalink);
-        } else if (this.isSearchRequest(nextProps)) {
-            this.props.searchSite(nextProps.searchTerm);
-        } else if (this.isRequestForIndex(nextProps)) {
-            this.props.fetchPosts(nextProps.pageNum);
+        this.getPosts(nextProps);
+    }
+
+    getPosts(props, willMount = false) {
+        switch (props.routePath) {
+            case 'search/:term':
+                if (props.searchTerm !== this.props.searchTerm || willMount) {
+                    this.props.searchSite(props.searchTerm);
+                }
+                break;
+            case '*':
+                if (props.prettyPermalink !== this.props.prettyPermalink || willMount) {
+                    this.props.fetchPost(props.prettyPermalink);
+                }
+                break;
+            case 'page/:pageNum':
+            default:
+                if (props.pageNum !== this.props.pageNum || willMount || props.routePath !== this.props.routePath) {
+                    this.props.fetchPosts(props.pageNum);
+                }
+                break;
         }
+    }
+
+    componentWillUpdate() {
+        window.scrollTo(0, 0);
     }
 
     isSingle() {
@@ -27,28 +47,6 @@ class Main extends Component {
 
     getContentOrExcerpt(post) {
         return this.isSingle() ? post.content.rendered : post.excerpt.rendered;
-    }
-
-    isSearchRequest(nextProps) {
-        return 'undefined' !== typeof nextProps.searchTerm && this.props.searchTerm !== nextProps.searchTerm && 2 < nextProps.searchTerm.length;
-    }
-
-    isRequestPrettyPermalink(nextProps) {
-        return this.props.prettyPermalink !== nextProps.prettyPermalink && 'undefined' !== typeof nextProps.prettyPermalink;
-    }
-
-    isRequestForIndex(nextProps) {
-        return this.props.pageNum !== nextProps.pageNum
-            || ('undefined' === typeof nextProps.prettyPermalink && 'undefined' === typeof nextProps.searchTerm)
-            && (this.props.prettyPermalink !== nextProps.prettyPermalink || this.props.searchTerm !== nextProps.searchTerm);
-    }
-
-    componentWillMount() {
-        if ('undefined' !== typeof this.props.prettyPermalink) {
-            this.props.fetchPost(this.props.prettyPermalink);
-        } else {
-            this.props.fetchPosts(this.props.pageNum);
-        }
     }
 
     renderPosts(posts) {

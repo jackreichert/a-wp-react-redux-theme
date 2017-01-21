@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 
 import Menu from '../containers/menu';
-import Search from '../containers/search';
+import Search from './search';
 
 class Header extends Component {
     render() {
@@ -16,7 +16,7 @@ class Header extends Component {
                 <h1 className="navbar-brand"><Link to='/'>{RT_API.siteName}</Link></h1>
                 <nav className="collapse navbar-collapse">
                     <Menu name="main_menu"/>
-                    <Search />
+                    <Search searchTerm={this.props.term}/>
                 </nav>
             </header>
         );
