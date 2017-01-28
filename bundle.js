@@ -28537,13 +28537,17 @@
 
 	var _blog2 = _interopRequireDefault(_blog);
 
-	var _single = __webpack_require__(319);
-
-	var _single2 = _interopRequireDefault(_single);
-
 	var _search = __webpack_require__(320);
 
 	var _search2 = _interopRequireDefault(_search);
+
+	var _category = __webpack_require__(335);
+
+	var _category2 = _interopRequireDefault(_category);
+
+	var _single = __webpack_require__(319);
+
+	var _single2 = _interopRequireDefault(_single);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28553,7 +28557,7 @@
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _blog2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'page/:pageNum', component: _blog2.default, addHandlerKey: true }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _search2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _blog2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _category2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: _single2.default })
 	);
 
@@ -28597,16 +28601,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Layout = function (_Component) {
-	    _inherits(Layout, _Component);
+	var Blog = function (_Component) {
+	    _inherits(Blog, _Component);
 
-	    function Layout() {
-	        _classCallCheck(this, Layout);
+	    function Blog() {
+	        _classCallCheck(this, Blog);
 
-	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Blog.__proto__ || Object.getPrototypeOf(Blog)).apply(this, arguments));
 	    }
 
-	    _createClass(Layout, [{
+	    _createClass(Blog, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            this.getPosts(this.props, true);
@@ -28638,7 +28642,7 @@
 	        }
 	    }]);
 
-	    return Layout;
+	    return Blog;
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
@@ -28647,7 +28651,7 @@
 	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Layout);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts })(Blog);
 
 /***/ },
 /* 271 */
@@ -28660,6 +28664,7 @@
 	});
 	exports.FETCH_MENU = exports.SEARCH_POSTS = exports.FETCH_POST = exports.FETCH_POSTS = undefined;
 	exports.fetchPosts = fetchPosts;
+	exports.fetchPostsFromCat = fetchPostsFromCat;
 	exports.fetchPost = fetchPost;
 	exports.fetchMenu = fetchMenu;
 	exports.searchSite = searchSite;
@@ -28691,6 +28696,26 @@
 	            });
 	        });
 	    };
+	}
+
+	function fetchPostsFromCat() {
+	    var slug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uncategorized';
+	    var post_type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'posts';
+
+	    return function (dispatch) {
+	        _axios2.default.get('' + WP_API_ENDPOINT + post_type + '?_embed&categories=' + getCategoryIdFromSlug(slug)).then(function (response) {
+	            dispatch({
+	                type: FETCH_POSTS,
+	                payload: response.data
+	            });
+	        });
+	    };
+	}
+
+	function getCategoryIdFromSlug(slug) {
+	    return RT_API['categories'].filter(function (cat) {
+	        return cat.slug === slug;
+	    })[0].term_id;
 	}
 
 	function fetchPost(prettyPermalink) {
@@ -30231,7 +30256,7 @@
 
 	var _reactRouter = __webpack_require__(216);
 
-	var _menu = __webpack_require__(335);
+	var _menu = __webpack_require__(298);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -30294,7 +30319,115 @@
 	module.exports = Header;
 
 /***/ },
-/* 298 */,
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(216);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _actions = __webpack_require__(271);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Menu = function (_Component) {
+	    _inherits(Menu, _Component);
+
+	    function Menu() {
+	        _classCallCheck(this, Menu);
+
+	        return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
+	    }
+
+	    _createClass(Menu, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.fetchMenu(this.props.name);
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate(nextProps) {
+	            return this.props.name === nextProps.menu.name || "" === nextProps.menu.name;
+	        }
+	    }, {
+	        key: 'renderMenu',
+	        value: function renderMenu(menu) {
+	            return menu.items.map(function (item) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: item.ID, className: 'nav-item' },
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
+	                        item.title
+	                    )
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'getClasses',
+	        value: function getClasses() {
+	            var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+	            switch (location) {
+	                case 'main_menu':
+	                    return 'navbar-nav mr-auto';
+	                case 'footer_menu':
+	                    return 'nav justify-content-center';
+	                default:
+	                    return '';
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'ul',
+	                { className: this.getClasses(this.props.menu.name) },
+	                this.renderMenu(this.props.menu)
+	            );
+	        }
+	    }], [{
+	        key: 'getRelativeUrl',
+	        value: function getRelativeUrl(url) {
+	            if (url === window.location.origin) {
+	                return '/';
+	            }
+
+	            return url.substr(window.location.origin.length);
+	        }
+	    }]);
+
+	    return Menu;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var menu = _ref.menu;
+
+	    return { menu: menu };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchMenu: _actions.fetchMenu })(Menu);
+
+/***/ },
 /* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -30332,7 +30465,6 @@
 	    _createClass(Search, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            console.log(this.props.searchTerm);
 	            if (this.props.isSearch) {
 	                this.searchInput.focus();
 	            }
@@ -30439,13 +30571,25 @@
 	            return this.isSingle() ? post.content.rendered : post.excerpt.rendered;
 	        }
 	    }, {
+	        key: 'getCategories',
+	        value: function getCategories(cat_ids) {
+	            if ('undefined' !== typeof cat_ids) {
+	                return cat_ids.map(function (cat_id) {
+	                    return RT_API['categories'].filter(function (cat) {
+	                        return cat.term_id === cat_id;
+	                    })[0];
+	                });
+	            }
+	        }
+	    }, {
 	        key: 'renderPosts',
 	        value: function renderPosts(posts) {
 	            var _this2 = this;
 
 	            return posts.map(function (post) {
 	                return _react2.default.createElement(_article2.default, { key: post.id, title: post.title.rendered, content: _this2.getContentOrExcerpt(post),
-	                    link: post.link, isSingle: _this2.isSingle(), featuredImage: post.featured_image_url });
+	                    link: post.link, isSingle: _this2.isSingle(), featuredImage: post.featured_image_url,
+	                    categories: _this2.getCategories(post.categories) });
 	            });
 	        }
 	    }, {
@@ -30471,7 +30615,7 @@
 	                        this.renderPosts(this.props.posts)
 	                    )
 	                ),
-	                _react2.default.createElement(_pageNav2.default, { pageNum: this.props.pageNum, shouldRender: 1 < this.props.posts.length })
+	                _react2.default.createElement(_pageNav2.default, { pageNum: this.props.pageNum, shouldRender: 10 === this.props.posts.length })
 	            );
 	        }
 	    }]);
@@ -32610,6 +32754,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(216);
+
 	var _title = __webpack_require__(315);
 
 	var _title2 = _interopRequireDefault(_title);
@@ -32641,6 +32787,23 @@
 	            return this.props.isSingle ? 'card single w-75' : 'card archive';
 	        }
 	    }, {
+	        key: 'renderCategories',
+	        value: function renderCategories() {
+	            var _this2 = this;
+
+	            if ('undefined' !== typeof this.props.categories) {
+	                return this.props.categories.map(function (cat) {
+	                    if (1 == _this2.props.categories.length || cat.slug !== 'uncategorized') {
+	                        return _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/category/' + cat.slug, key: cat.term_id },
+	                            cat.name
+	                        );
+	                    }
+	                });
+	            }
+	        }
+	    }, {
 	        key: 'getFeaturedImageSrc',
 	        value: function getFeaturedImageSrc() {
 	            if (this.props.featuredImage) {
@@ -32663,6 +32826,11 @@
 	                        _title2.default,
 	                        { link: this.props.link, isSingle: this.props.isSingle },
 	                        this.props.title
+	                    ),
+	                    _react2.default.createElement(
+	                        'p',
+	                        { className: 'cats' },
+	                        this.renderCategories()
 	                    ),
 	                    _react2.default.createElement(
 	                        _content2.default,
@@ -32909,7 +33077,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _menu = __webpack_require__(335);
+	var _menu = __webpack_require__(298);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -33050,7 +33218,7 @@
 	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Single);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPost: _index.fetchPost })(Single);
 
 /***/ },
 /* 320 */
@@ -33142,7 +33310,7 @@
 	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Search);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { searchSite: _index.searchSite })(Search);
 
 /***/ },
 /* 321 */
@@ -34357,11 +34525,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(216);
-
 	var _reactRedux = __webpack_require__(178);
 
-	var _actions = __webpack_require__(271);
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(318);
+
+	var _footer2 = _interopRequireDefault(_footer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34371,84 +34549,57 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Menu = function (_Component) {
-	    _inherits(Menu, _Component);
+	var Category = function (_Component) {
+	    _inherits(Category, _Component);
 
-	    function Menu() {
-	        _classCallCheck(this, Menu);
+	    function Category() {
+	        _classCallCheck(this, Category);
 
-	        return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).apply(this, arguments));
 	    }
 
-	    _createClass(Menu, [{
+	    _createClass(Category, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
-	            this.props.fetchMenu(this.props.name);
+	            this.getPosts(this.props, true);
 	        }
 	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate(nextProps) {
-	            return this.props.name === nextProps.menu.name || "" === nextProps.menu.name;
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getPosts(nextProps);
 	        }
 	    }, {
-	        key: 'renderMenu',
-	        value: function renderMenu(menu) {
-	            return menu.items.map(function (item) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: item.ID, className: 'nav-item' },
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
-	                        item.title
-	                    )
-	                );
-	            });
-	        }
-	    }, {
-	        key: 'getClasses',
-	        value: function getClasses() {
-	            var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	            switch (location) {
-	                case 'main_menu':
-	                    return 'navbar-nav mr-auto';
-	                case 'footer_menu':
-	                    return 'nav justify-content-center';
-	                default:
-	                    return '';
+	            if (props.params.slug !== this.props.params.slug || willMount) {
+	                this.props.fetchPostsFromCat(props.params.slug);
 	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'ul',
-	                { className: this.getClasses(this.props.menu.name) },
-	                this.renderMenu(this.props.menu)
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
+	                _react2.default.createElement(_footer2.default, null)
 	            );
-	        }
-	    }], [{
-	        key: 'getRelativeUrl',
-	        value: function getRelativeUrl(url) {
-	            if (url === window.location.origin) {
-	                return '/';
-	            }
-
-	            return url.substr(window.location.origin.length);
 	        }
 	    }]);
 
-	    return Menu;
+	    return Category;
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
-	    var menu = _ref.menu;
+	    var posts = _ref.posts;
 
-	    return { menu: menu };
+	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchMenu: _actions.fetchMenu })(Menu);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromCat: _index.fetchPostsFromCat })(Category);
 
 /***/ }
 /******/ ]);

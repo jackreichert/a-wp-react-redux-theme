@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {fetchPosts} from '../actions/index';
+import {fetchPostsFromCat} from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
 import Footer from '../components/footer';
 
-class Blog extends Component {
+class Category extends Component {
     componentWillMount() {
         this.getPosts(this.props, true);
     }
@@ -17,8 +17,8 @@ class Blog extends Component {
     }
 
     getPosts(props, willMount = false) {
-        if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
-            this.props.fetchPosts(props.params.pageNum || 1);
+        if (props.params.slug !== this.props.params.slug || willMount) {
+            this.props.fetchPostsFromCat(props.params.slug);
         }
     }
 
@@ -37,4 +37,4 @@ function mapStateToProps({posts}) {
     return {posts};
 }
 
-export default connect(mapStateToProps, {fetchPosts})(Blog)
+export default connect(mapStateToProps, {fetchPostsFromCat})(Category)

@@ -21,6 +21,24 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
 }
 
+export function fetchPostsFromCat(slug = 'uncategorized', post_type = 'posts') {
+    return function (dispatch) {
+        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&categories=${getCategoryIdFromSlug(slug)}`)
+            .then(response => {
+                dispatch({
+                    type: FETCH_POSTS,
+                    payload: response.data
+                });
+            });
+    }
+}
+
+function getCategoryIdFromSlug(slug) {
+    return RT_API['categories'].filter(cat => {
+        return cat.slug === slug
+    })[0].term_id;
+}
+
 export function fetchPost(prettyPermalink) {
     return function (dispatch) {
         axios.get(`${PRETTYPERMALINK_ENDPOINT}${prettyPermalink}`)

@@ -3,7 +3,6 @@ import {browserHistory} from 'react-router';
 
 export default class Search extends Component {
     componentDidMount() {
-        console.log(this.props.searchTerm);
         if ( this.props.isSearch) {
             this.searchInput.focus();
         }

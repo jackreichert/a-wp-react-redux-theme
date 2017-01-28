@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {fetchPosts, fetchPost, searchSite} from '../actions/index';
+import {fetchPost} from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
@@ -37,4 +37,4 @@ function mapStateToProps({posts}) {
     return {posts};
 }
 
-export default connect(mapStateToProps, {fetchPosts, fetchPost, searchSite})(Single)
+export default connect(mapStateToProps, {fetchPost})(Single)
