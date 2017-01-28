@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 
-import Menu from '../containers/menu';
+import Menu from '../containers/parts/menu';
 import Search from './search';
 
 class Header extends Component {

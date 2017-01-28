@@ -30231,7 +30231,7 @@
 
 	var _reactRouter = __webpack_require__(216);
 
-	var _menu = __webpack_require__(298);
+	var _menu = __webpack_require__(335);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -30294,115 +30294,7 @@
 	module.exports = Header;
 
 /***/ },
-/* 298 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(216);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _actions = __webpack_require__(271);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Menu = function (_Component) {
-	    _inherits(Menu, _Component);
-
-	    function Menu() {
-	        _classCallCheck(this, Menu);
-
-	        return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
-	    }
-
-	    _createClass(Menu, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.props.fetchMenu(this.props.name);
-	        }
-	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate(nextProps) {
-	            return this.props.name === nextProps.menu.name || "" === nextProps.menu.name;
-	        }
-	    }, {
-	        key: 'renderMenu',
-	        value: function renderMenu(menu) {
-	            return menu.items.map(function (item) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: item.ID, className: 'nav-item' },
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
-	                        item.title
-	                    )
-	                );
-	            });
-	        }
-	    }, {
-	        key: 'getClasses',
-	        value: function getClasses() {
-	            var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-	            switch (location) {
-	                case 'main_menu':
-	                    return 'navbar-nav mr-auto';
-	                case 'footer_menu':
-	                    return 'nav justify-content-center';
-	                default:
-	                    return '';
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'ul',
-	                { className: this.getClasses(this.props.menu.name) },
-	                this.renderMenu(this.props.menu)
-	            );
-	        }
-	    }], [{
-	        key: 'getRelativeUrl',
-	        value: function getRelativeUrl(url) {
-	            if (url === window.location.origin) {
-	                return '/';
-	            }
-
-	            return url.substr(window.location.origin.length);
-	        }
-	    }]);
-
-	    return Menu;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var menu = _ref.menu;
-
-	    return { menu: menu };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchMenu: _actions.fetchMenu })(Menu);
-
-/***/ },
+/* 298 */,
 /* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33017,7 +32909,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _menu = __webpack_require__(298);
+	var _menu = __webpack_require__(335);
 
 	var _menu2 = _interopRequireDefault(_menu);
 
@@ -34448,6 +34340,115 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(216);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _actions = __webpack_require__(271);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Menu = function (_Component) {
+	    _inherits(Menu, _Component);
+
+	    function Menu() {
+	        _classCallCheck(this, Menu);
+
+	        return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
+	    }
+
+	    _createClass(Menu, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.fetchMenu(this.props.name);
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate(nextProps) {
+	            return this.props.name === nextProps.menu.name || "" === nextProps.menu.name;
+	        }
+	    }, {
+	        key: 'renderMenu',
+	        value: function renderMenu(menu) {
+	            return menu.items.map(function (item) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: item.ID, className: 'nav-item' },
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
+	                        item.title
+	                    )
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'getClasses',
+	        value: function getClasses() {
+	            var location = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+	            switch (location) {
+	                case 'main_menu':
+	                    return 'navbar-nav mr-auto';
+	                case 'footer_menu':
+	                    return 'nav justify-content-center';
+	                default:
+	                    return '';
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'ul',
+	                { className: this.getClasses(this.props.menu.name) },
+	                this.renderMenu(this.props.menu)
+	            );
+	        }
+	    }], [{
+	        key: 'getRelativeUrl',
+	        value: function getRelativeUrl(url) {
+	            if (url === window.location.origin) {
+	                return '/';
+	            }
+
+	            return url.substr(window.location.origin.length);
+	        }
+	    }]);
+
+	    return Menu;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var menu = _ref.menu;
+
+	    return { menu: menu };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchMenu: _actions.fetchMenu })(Menu);
 
 /***/ }
 /******/ ]);
