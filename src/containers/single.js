@@ -26,7 +26,10 @@ class Single extends Component {
         return (
             <section className="container-fluid">
                 <Header />
-                <Main posts={this.props.posts} />
+                <Main posts={this.props.posts}
+                      pageNum={this.props.params.pageNum || 1}
+                      route={this.props.route.path}
+                      slug={this.props.params.slug || ''} />
                 <Footer />
             </section>
         );

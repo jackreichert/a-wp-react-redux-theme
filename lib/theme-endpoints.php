@@ -14,6 +14,9 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 			$Pretty_Permalinks_Endpoint = new Pretty_Permalinks_Endpoint();
 			$Pretty_Permalinks_Endpoint->init();
 
+			$Add_Formatted_Date_Endpoint = new Add_Formatted_Date_Endpoint();
+			$Add_Formatted_Date_Endpoint->init();
+
 			$Menus_Endpoint = new Menus_Endpoint();
 			$Menus_Endpoint->init();
 

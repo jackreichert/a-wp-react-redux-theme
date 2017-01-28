@@ -3,6 +3,7 @@ import axios from 'axios';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
+export const CATEGORY_POSTS = 'CATEGORY_POSTS';
 export const FETCH_MENU = 'FETCH_MENU';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
@@ -21,12 +22,12 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
 }
 
-export function fetchPostsFromCat(slug = 'uncategorized', post_type = 'posts') {
+export function fetchPostsFromCat(slug = 'uncategorized', pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&categories=${getCategoryIdFromSlug(slug)}`)
+        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&categories=${getCategoryIdFromSlug(slug)}&page=${pageNum}`)
             .then(response => {
                 dispatch({
-                    type: FETCH_POSTS,
+                    type: CATEGORY_POSTS,
                     payload: response.data
                 });
             });

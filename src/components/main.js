@@ -29,8 +29,15 @@ export default class Main extends Component {
 
     renderPosts(posts) {
         return posts.map(post => {
-            return <Article key={post.id} title={post.title.rendered} content={this.getContentOrExcerpt(post)}
-                            link={post.link} isSingle={this.isSingle()} featuredImage={post.featured_image_url}
+            return <Article key={post.id}
+                            type={post.type}
+                            title={post.title.rendered}
+                            content={this.getContentOrExcerpt(post)}
+                            date={post.date}
+                            formattedDate={post.formatted_date}
+                            link={post.link}
+                            isSingle={this.isSingle()}
+                            featuredImage={post.featured_image_url}
                             categories={this.getCategories(post.categories)}/>;
         });
     }
@@ -50,7 +57,10 @@ export default class Main extends Component {
                         {this.renderPosts(this.props.posts)}
                     </ReactCSSTransitionGroup>
                 </main>
-                <PageNav pageNum={this.props.pageNum} shouldRender={10 === this.props.posts.length}/>
+                <PageNav pageNum={this.props.pageNum}
+                         shouldRender={10 === this.props.posts.length}
+                         slug={this.props.slug}
+                         route={this.props.route}/>
             </div>
         );
     }

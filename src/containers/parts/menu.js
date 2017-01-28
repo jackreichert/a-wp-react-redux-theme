@@ -9,17 +9,19 @@ class Menu extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return (this.props.name === nextProps.menu.name || "" === nextProps.menu.name);
+        return this.props.name === nextProps.menu.name;
     }
 
     renderMenu(menu) {
-        return menu.items.map(item => {
-            return (
-                <li key={item.ID} className="nav-item">
-                    <Link className="nav-link" to={Menu.getRelativeUrl(item.url)}>{item.title}</Link>
-                </li>
-            );
-        });
+        if ( this.props.name === menu.name) {
+            return menu.items.map(item => {
+                return (
+                    <li key={item.ID} className="nav-item">
+                        <Link className="nav-link" to={Menu.getRelativeUrl(item.url)}>{item.title}</Link>
+                    </li>
+                );
+            });
+        }
     }
 
     static getRelativeUrl(url) {

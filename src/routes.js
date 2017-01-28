@@ -12,6 +12,7 @@ export default (
         <Route path="page/:pageNum" component={Blog} addHandlerKey={true}/>
         <Route path="search/:term" component={Search}/>
         <Route path="category/:slug" component={Category}/>
+        <Route path="category/:slug/:pageNum" component={Category}/>
         <Route path="*" component={Single}/>
     </Route>
 );

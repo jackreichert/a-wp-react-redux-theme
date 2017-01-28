@@ -13,7 +13,15 @@ export default class PageNav extends Component {
     }
 
     getNextPage() {
-        return `/page/${parseInt(this.props.pageNum) + 1}`;
+        return `/${this.getArchiveType()}${this.getArchiveSlug()}/${parseInt(this.props.pageNum) + 1}`;
+    }
+
+    getArchiveType() {
+        return this.props.route.substring(0,this.props.route.indexOf('/:')) || 'page';
+    }
+
+    getArchiveSlug() {
+        return "" !== this.props.slug ? `/${this.props.slug}` : '';
     }
 
     render() {

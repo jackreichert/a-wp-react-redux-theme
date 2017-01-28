@@ -62,13 +62,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(321);
+	var _store = __webpack_require__(322);
 
 	var _store2 = _interopRequireDefault(_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(334);
+	__webpack_require__(335);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28537,15 +28537,15 @@
 
 	var _blog2 = _interopRequireDefault(_blog);
 
-	var _search = __webpack_require__(320);
+	var _search = __webpack_require__(319);
 
 	var _search2 = _interopRequireDefault(_search);
 
-	var _category = __webpack_require__(335);
+	var _category = __webpack_require__(320);
 
 	var _category2 = _interopRequireDefault(_category);
 
-	var _single = __webpack_require__(319);
+	var _single = __webpack_require__(321);
 
 	var _single2 = _interopRequireDefault(_single);
 
@@ -28558,6 +28558,7 @@
 	    _react2.default.createElement(_reactRouter.Route, { path: 'page/:pageNum', component: _blog2.default, addHandlerKey: true }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _search2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug/:pageNum', component: _category2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: _single2.default })
 	);
 
@@ -28636,7 +28637,10 @@
 	                'section',
 	                { className: 'container-fluid' },
 	                _react2.default.createElement(_header2.default, null),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts,
+	                    pageNum: this.props.params.pageNum || 1,
+	                    route: this.props.route.path || '',
+	                    slug: this.props.params.slug || '' }),
 	                _react2.default.createElement(_footer2.default, null)
 	            );
 	        }
@@ -28662,7 +28666,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.FETCH_MENU = exports.SEARCH_POSTS = exports.FETCH_POST = exports.FETCH_POSTS = undefined;
+	exports.FETCH_MENU = exports.CATEGORY_POSTS = exports.SEARCH_POSTS = exports.FETCH_POST = exports.FETCH_POSTS = undefined;
 	exports.fetchPosts = fetchPosts;
 	exports.fetchPostsFromCat = fetchPostsFromCat;
 	exports.fetchPost = fetchPost;
@@ -28678,6 +28682,7 @@
 	var FETCH_POSTS = exports.FETCH_POSTS = 'FETCH_POSTS';
 	var FETCH_POST = exports.FETCH_POST = 'FETCH_POST';
 	var SEARCH_POSTS = exports.SEARCH_POSTS = 'SEARCH_POSTS';
+	var CATEGORY_POSTS = exports.CATEGORY_POSTS = 'CATEGORY_POSTS';
 	var FETCH_MENU = exports.FETCH_MENU = 'FETCH_MENU';
 
 	var WP_API_ENDPOINT = RT_API.root + 'wp/v2/';
@@ -28700,12 +28705,13 @@
 
 	function fetchPostsFromCat() {
 	    var slug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uncategorized';
-	    var post_type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'posts';
+	    var pageNum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+	    var post_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'posts';
 
 	    return function (dispatch) {
-	        _axios2.default.get('' + WP_API_ENDPOINT + post_type + '?_embed&categories=' + getCategoryIdFromSlug(slug)).then(function (response) {
+	        _axios2.default.get('' + WP_API_ENDPOINT + post_type + '?_embed&categories=' + getCategoryIdFromSlug(slug) + '&page=' + pageNum).then(function (response) {
 	            dispatch({
-	                type: FETCH_POSTS,
+	                type: CATEGORY_POSTS,
 	                payload: response.data
 	            });
 	        });
@@ -30365,22 +30371,24 @@
 	    }, {
 	        key: 'shouldComponentUpdate',
 	        value: function shouldComponentUpdate(nextProps) {
-	            return this.props.name === nextProps.menu.name || "" === nextProps.menu.name;
+	            return this.props.name === nextProps.menu.name;
 	        }
 	    }, {
 	        key: 'renderMenu',
 	        value: function renderMenu(menu) {
-	            return menu.items.map(function (item) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: item.ID, className: 'nav-item' },
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
-	                        item.title
-	                    )
-	                );
-	            });
+	            if (this.props.name === menu.name) {
+	                return menu.items.map(function (item) {
+	                    return _react2.default.createElement(
+	                        'li',
+	                        { key: item.ID, className: 'nav-item' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { className: 'nav-link', to: Menu.getRelativeUrl(item.url) },
+	                            item.title
+	                        )
+	                    );
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'getClasses',
@@ -30587,8 +30595,15 @@
 	            var _this2 = this;
 
 	            return posts.map(function (post) {
-	                return _react2.default.createElement(_article2.default, { key: post.id, title: post.title.rendered, content: _this2.getContentOrExcerpt(post),
-	                    link: post.link, isSingle: _this2.isSingle(), featuredImage: post.featured_image_url,
+	                return _react2.default.createElement(_article2.default, { key: post.id,
+	                    type: post.type,
+	                    title: post.title.rendered,
+	                    content: _this2.getContentOrExcerpt(post),
+	                    date: post.date,
+	                    formattedDate: post.formatted_date,
+	                    link: post.link,
+	                    isSingle: _this2.isSingle(),
+	                    featuredImage: post.featured_image_url,
 	                    categories: _this2.getCategories(post.categories) });
 	            });
 	        }
@@ -30615,7 +30630,10 @@
 	                        this.renderPosts(this.props.posts)
 	                    )
 	                ),
-	                _react2.default.createElement(_pageNav2.default, { pageNum: this.props.pageNum, shouldRender: 10 === this.props.posts.length })
+	                _react2.default.createElement(_pageNav2.default, { pageNum: this.props.pageNum,
+	                    shouldRender: 10 === this.props.posts.length,
+	                    slug: this.props.slug,
+	                    route: this.props.route })
 	            );
 	        }
 	    }]);
@@ -32754,8 +32772,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(216);
-
 	var _title = __webpack_require__(315);
 
 	var _title2 = _interopRequireDefault(_title);
@@ -32763,6 +32779,10 @@
 	var _content = __webpack_require__(316);
 
 	var _content2 = _interopRequireDefault(_content);
+
+	var _meta = __webpack_require__(336);
+
+	var _meta2 = _interopRequireDefault(_meta);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32785,23 +32805,6 @@
 	        key: 'getClasses',
 	        value: function getClasses(piece) {
 	            return this.props.isSingle ? 'card single w-75' : 'card archive';
-	        }
-	    }, {
-	        key: 'renderCategories',
-	        value: function renderCategories() {
-	            var _this2 = this;
-
-	            if ('undefined' !== typeof this.props.categories) {
-	                return this.props.categories.map(function (cat) {
-	                    if (1 == _this2.props.categories.length || cat.slug !== 'uncategorized') {
-	                        return _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/category/' + cat.slug, key: cat.term_id },
-	                            cat.name
-	                        );
-	                    }
-	                });
-	            }
 	        }
 	    }, {
 	        key: 'getFeaturedImageSrc',
@@ -32827,11 +32830,11 @@
 	                        { link: this.props.link, isSingle: this.props.isSingle },
 	                        this.props.title
 	                    ),
-	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'cats' },
-	                        this.renderCategories()
-	                    ),
+	                    _react2.default.createElement(_meta2.default, { categories: this.props.categories,
+	                        date: this.props.date,
+	                        formattedDate: this.props.formattedDate,
+	                        type: this.props.type,
+	                        isSingle: this.props.isSingle }),
 	                    _react2.default.createElement(
 	                        _content2.default,
 	                        { isSingle: this.props.isSingle },
@@ -33016,7 +33019,17 @@
 	    }, {
 	        key: 'getNextPage',
 	        value: function getNextPage() {
-	            return '/page/' + (parseInt(this.props.pageNum) + 1);
+	            return '/' + this.getArchiveType() + this.getArchiveSlug() + '/' + (parseInt(this.props.pageNum) + 1);
+	        }
+	    }, {
+	        key: 'getArchiveType',
+	        value: function getArchiveType() {
+	            return this.props.route.substring(0, this.props.route.indexOf('/:')) || 'page';
+	        }
+	    }, {
+	        key: 'getArchiveSlug',
+	        value: function getArchiveSlug() {
+	            return "" !== this.props.slug ? '/' + this.props.slug : '';
 	        }
 	    }, {
 	        key: 'render',
@@ -33168,16 +33181,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Single = function (_Component) {
-	    _inherits(Single, _Component);
+	var Search = function (_Component) {
+	    _inherits(Search, _Component);
 
-	    function Single() {
-	        _classCallCheck(this, Single);
+	    function Search() {
+	        _classCallCheck(this, Search);
 
-	        return _possibleConstructorReturn(this, (Single.__proto__ || Object.getPrototypeOf(Single)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
 	    }
 
-	    _createClass(Single, [{
+	    _createClass(Search, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            this.getPosts(this.props, true);
@@ -33192,8 +33205,8 @@
 	        value: function getPosts(props) {
 	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	            if (props.params.splat !== this.props.params.splat || willMount) {
-	                this.props.fetchPost(props.params.splat);
+	            if (props.params.term !== this.props.params.term || willMount) {
+	                this.props.searchSite(props.params.term);
 	            }
 	        }
 	    }, {
@@ -33202,14 +33215,17 @@
 	            return _react2.default.createElement(
 	                'section',
 	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, null),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts }),
+	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term, isSearch: true }),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts,
+	                    pageNum: this.props.params.pageNum || 1,
+	                    route: this.props.route.path,
+	                    slug: this.props.params.term || '' }),
 	                _react2.default.createElement(_footer2.default, null)
 	            );
 	        }
 	    }]);
 
-	    return Single;
+	    return Search;
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
@@ -33218,7 +33234,7 @@
 	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPost: _index.fetchPost })(Single);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { searchSite: _index.searchSite })(Search);
 
 /***/ },
 /* 320 */
@@ -33260,16 +33276,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Search = function (_Component) {
-	    _inherits(Search, _Component);
+	var Category = function (_Component) {
+	    _inherits(Category, _Component);
 
-	    function Search() {
-	        _classCallCheck(this, Search);
+	    function Category() {
+	        _classCallCheck(this, Category);
 
-	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).apply(this, arguments));
 	    }
 
-	    _createClass(Search, [{
+	    _createClass(Category, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            this.getPosts(this.props, true);
@@ -33284,8 +33300,8 @@
 	        value: function getPosts(props) {
 	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	            if (props.params.term !== this.props.params.term || willMount) {
-	                this.props.searchSite(props.params.term);
+	            if (props.params.slug !== this.props.params.slug || willMount || props.params.pageNum !== this.props.params.pageNum) {
+	                this.props.fetchPostsFromCat(props.params.slug, props.params.pageNum);
 	            }
 	        }
 	    }, {
@@ -33294,14 +33310,17 @@
 	            return _react2.default.createElement(
 	                'section',
 	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term, isSearch: true }),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts }),
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts,
+	                    pageNum: this.props.params.pageNum || 1,
+	                    route: this.props.route.path,
+	                    slug: this.props.params.slug || '' }),
 	                _react2.default.createElement(_footer2.default, null)
 	            );
 	        }
 	    }]);
 
-	    return Search;
+	    return Category;
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
@@ -33310,10 +33329,105 @@
 	    return { posts: posts };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { searchSite: _index.searchSite })(Search);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromCat: _index.fetchPostsFromCat })(Category);
 
 /***/ },
 /* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(318);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Single = function (_Component) {
+	    _inherits(Single, _Component);
+
+	    function Single() {
+	        _classCallCheck(this, Single);
+
+	        return _possibleConstructorReturn(this, (Single.__proto__ || Object.getPrototypeOf(Single)).apply(this, arguments));
+	    }
+
+	    _createClass(Single, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getPosts(this.props, true);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getPosts(nextProps);
+	        }
+	    }, {
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            if (props.params.splat !== this.props.params.splat || willMount) {
+	                this.props.fetchPost(props.params.splat);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts,
+	                    pageNum: this.props.params.pageNum || 1,
+	                    route: this.props.route.path,
+	                    slug: this.props.params.slug || '' }),
+	                _react2.default.createElement(_footer2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Single;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var posts = _ref.posts;
+
+	    return { posts: posts };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPost: _index.fetchPost })(Single);
+
+/***/ },
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33324,19 +33438,19 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _reduxThunk = __webpack_require__(322);
+	var _reduxThunk = __webpack_require__(323);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxPromiseMiddleware = __webpack_require__(323);
+	var _reduxPromiseMiddleware = __webpack_require__(324);
 
 	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
-	var _reduxLogger = __webpack_require__(325);
+	var _reduxLogger = __webpack_require__(326);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reducers = __webpack_require__(331);
+	var _reducers = __webpack_require__(332);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -33347,7 +33461,7 @@
 	exports.default = (0, _redux.createStore)(_reducers2.default, appliedMiddleware);
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33375,7 +33489,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33392,7 +33506,7 @@
 
 	exports.default = promiseMiddleware;
 
-	var _isPromise = __webpack_require__(324);
+	var _isPromise = __webpack_require__(325);
 
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 
@@ -33549,7 +33663,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33570,7 +33684,7 @@
 	}
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33581,11 +33695,11 @@
 	  value: true
 	});
 
-	var _core = __webpack_require__(326);
+	var _core = __webpack_require__(327);
 
-	var _helpers = __webpack_require__(327);
+	var _helpers = __webpack_require__(328);
 
-	var _defaults = __webpack_require__(330);
+	var _defaults = __webpack_require__(331);
 
 	var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -33688,7 +33802,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33698,9 +33812,9 @@
 	});
 	exports.printBuffer = printBuffer;
 
-	var _helpers = __webpack_require__(327);
+	var _helpers = __webpack_require__(328);
 
-	var _diff = __webpack_require__(328);
+	var _diff = __webpack_require__(329);
 
 	var _diff2 = _interopRequireDefault(_diff);
 
@@ -33829,7 +33943,7 @@
 	}
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33853,7 +33967,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33863,7 +33977,7 @@
 	});
 	exports.default = diffLogger;
 
-	var _deepDiff = __webpack_require__(329);
+	var _deepDiff = __webpack_require__(330);
 
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
@@ -33949,7 +34063,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -34378,7 +34492,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34429,7 +34543,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34440,11 +34554,11 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _posts_reducer = __webpack_require__(332);
+	var _posts_reducer = __webpack_require__(333);
 
 	var _posts_reducer2 = _interopRequireDefault(_posts_reducer);
 
-	var _menu_reducer = __webpack_require__(333);
+	var _menu_reducer = __webpack_require__(334);
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
@@ -34456,7 +34570,7 @@
 	});
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34473,6 +34587,7 @@
 	        case _actions.FETCH_POSTS:
 	        case _actions.FETCH_POST:
 	        case _actions.SEARCH_POSTS:
+	        case _actions.CATEGORY_POSTS:
 	            return action.payload;
 	    }
 	    return state;
@@ -34481,7 +34596,7 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34504,13 +34619,13 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34525,21 +34640,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(178);
-
-	var _index = __webpack_require__(271);
-
-	var _header = __webpack_require__(297);
-
-	var _header2 = _interopRequireDefault(_header);
-
-	var _main = __webpack_require__(300);
-
-	var _main2 = _interopRequireDefault(_main);
-
-	var _footer = __webpack_require__(318);
-
-	var _footer2 = _interopRequireDefault(_footer);
+	var _reactRouter = __webpack_require__(216);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34549,57 +34650,73 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Category = function (_Component) {
-	    _inherits(Category, _Component);
+	var Meta = function (_Component) {
+	    _inherits(Meta, _Component);
 
-	    function Category() {
-	        _classCallCheck(this, Category);
+	    function Meta() {
+	        _classCallCheck(this, Meta);
 
-	        return _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Meta.__proto__ || Object.getPrototypeOf(Meta)).apply(this, arguments));
 	    }
 
-	    _createClass(Category, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.getPosts(this.props, true);
-	        }
-	    }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            this.getPosts(nextProps);
-	        }
-	    }, {
-	        key: 'getPosts',
-	        value: function getPosts(props) {
-	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	    _createClass(Meta, [{
+	        key: 'renderCategories',
+	        value: function renderCategories() {
+	            var _this2 = this;
 
-	            if (props.params.slug !== this.props.params.slug || willMount) {
-	                this.props.fetchPostsFromCat(props.params.slug);
+	            if ('undefined' !== typeof this.props.categories) {
+	                return this.props.categories.map(function (cat, i) {
+	                    if (1 == _this2.props.categories.length || cat.slug !== 'uncategorized') {
+	                        return _react2.default.createElement(
+	                            'span',
+	                            { key: cat.term_id },
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/category/' + cat.slug, className: 'cat-links' },
+	                                cat.name
+	                            ),
+	                            1 < _this2.props.categories.length && i < _this2.props.categories.length - 1 ? ', ' : ''
+	                        );
+	                    }
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'renderDates',
+	        value: function renderDates() {
+	            if ('post' === this.props.type && this.props.isSingle) {
+	                return _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    ' | ',
+	                    _react2.default.createElement(
+	                        'time',
+	                        { dateTime: this.props.date.substring(0, 10) },
+	                        this.props.formattedDate
+	                    )
+	                );
 	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'section',
-	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, null),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
-	                _react2.default.createElement(_footer2.default, null)
+	                'div',
+	                { className: 'meta' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'cats' },
+	                    this.renderCategories(),
+	                    this.renderDates()
+	                )
 	            );
 	        }
 	    }]);
 
-	    return Category;
+	    return Meta;
 	}(_react.Component);
 
-	function mapStateToProps(_ref) {
-	    var posts = _ref.posts;
-
-	    return { posts: posts };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromCat: _index.fetchPostsFromCat })(Category);
+	exports.default = Meta;
 
 /***/ }
 /******/ ]);
