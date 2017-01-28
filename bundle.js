@@ -62,13 +62,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(319);
+	var _store = __webpack_require__(321);
 
 	var _store2 = _interopRequireDefault(_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(332);
+	__webpack_require__(334);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28533,15 +28533,15 @@
 
 	var _reactRouter = __webpack_require__(216);
 
-	var _blog = __webpack_require__(337);
+	var _blog = __webpack_require__(270);
 
 	var _blog2 = _interopRequireDefault(_blog);
 
-	var _single = __webpack_require__(335);
+	var _single = __webpack_require__(319);
 
 	var _single2 = _interopRequireDefault(_single);
 
-	var _search = __webpack_require__(336);
+	var _search = __webpack_require__(320);
 
 	var _search2 = _interopRequireDefault(_search);
 
@@ -28552,13 +28552,104 @@
 	    { path: '/' },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _blog2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'page/:pageNum', component: _blog2.default, addHandlerKey: true }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _blog2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _search2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _blog2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: _single2.default })
 	);
 
 /***/ },
-/* 270 */,
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(318);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Layout = function (_Component) {
+	    _inherits(Layout, _Component);
+
+	    function Layout() {
+	        _classCallCheck(this, Layout);
+
+	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).apply(this, arguments));
+	    }
+
+	    _createClass(Layout, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getPosts(this.props, true);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getPosts(nextProps);
+	        }
+	    }, {
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
+	                this.props.fetchPosts(props.params.pageNum || 1);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
+	                _react2.default.createElement(_footer2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Layout;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var posts = _ref.posts;
+
+	    return { posts: posts };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Layout);
+
+/***/ },
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -30191,7 +30282,7 @@
 	                    'nav',
 	                    { className: 'collapse navbar-collapse' },
 	                    _react2.default.createElement(_menu2.default, { name: 'main_menu' }),
-	                    _react2.default.createElement(_search2.default, { searchTerm: this.props.term })
+	                    _react2.default.createElement(_search2.default, { searchTerm: this.props.searchTerm, isSearch: this.props.isSearch })
 	                )
 	            );
 	        }
@@ -30347,12 +30438,20 @@
 	    }
 
 	    _createClass(Search, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            console.log(this.props.searchTerm);
+	            if (this.props.isSearch) {
+	                this.searchInput.focus();
+	            }
+	        }
+	    }, {
 	        key: 'handleSearch',
 	        value: function handleSearch(event) {
 	            event.preventDefault();
-	            var term = event.target.value;
-	            if (2 < term.length) {
-	                _reactRouter.browserHistory.push('/search/' + term);
+	            var searchTerm = event.target.value;
+	            if (0 < searchTerm.length) {
+	                _reactRouter.browserHistory.push('/search/' + searchTerm);
 	            } else {
 	                _reactRouter.browserHistory.push('/');
 	            }
@@ -30365,11 +30464,16 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return _react2.default.createElement(
 	                'form',
 	                { onSubmit: this.submit, className: 'form-inline my-2 my-lg-0' },
 	                _react2.default.createElement('input', { type: 'search',
-	                    value: this.props.term,
+	                    value: this.props.searchTerm,
+	                    ref: function ref(input) {
+	                        return _this2.searchInput = input;
+	                    },
 	                    onChange: this.handleSearch.bind(this),
 	                    className: 'form-control mr-sm-2',
 	                    placeholder: 'Search for...' })
@@ -32642,16 +32746,13 @@
 	    _createClass(Article, [{
 	        key: 'getClasses',
 	        value: function getClasses(piece) {
-	            switch (piece) {
-	                case 'article':
-	                    return this.props.isSingle ? 'card single w-75' : 'card archive';
-	            }
+	            return this.props.isSingle ? 'card single w-75' : 'card archive';
 	        }
 	    }, {
-	        key: 'renderFeaturedImage',
-	        value: function renderFeaturedImage() {
+	        key: 'getFeaturedImageSrc',
+	        value: function getFeaturedImageSrc() {
 	            if (this.props.featuredImage) {
-	                return this.props.isSingle ? _react2.default.createElement('img', { src: this.props.featuredImage.large, className: 'card-img-top img-fluid' }) : _react2.default.createElement('img', { src: this.props.featuredImage.full, className: 'card-img-top img-fluid' });
+	                return this.props.isSingle ? this.props.featuredImage.large : this.props.featuredImage.full;
 	            } else {
 	                return '';
 	            }
@@ -32662,7 +32763,7 @@
 	            return _react2.default.createElement(
 	                'article',
 	                { className: this.getClasses('article') },
-	                this.renderFeaturedImage(),
+	                _react2.default.createElement('img', { src: this.getFeaturedImageSrc(), className: 'card-img-top img-fluid' }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'card-block' },
@@ -32974,24 +33075,208 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(318);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Single = function (_Component) {
+	    _inherits(Single, _Component);
+
+	    function Single() {
+	        _classCallCheck(this, Single);
+
+	        return _possibleConstructorReturn(this, (Single.__proto__ || Object.getPrototypeOf(Single)).apply(this, arguments));
+	    }
+
+	    _createClass(Single, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getPosts(this.props, true);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getPosts(nextProps);
+	        }
+	    }, {
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            if (props.params.splat !== this.props.params.splat || willMount) {
+	                this.props.fetchPost(props.params.splat);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts }),
+	                _react2.default.createElement(_footer2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Single;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var posts = _ref.posts;
+
+	    return { posts: posts };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Single);
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(318);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Search = function (_Component) {
+	    _inherits(Search, _Component);
+
+	    function Search() {
+	        _classCallCheck(this, Search);
+
+	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
+	    }
+
+	    _createClass(Search, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getPosts(this.props, true);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getPosts(nextProps);
+	        }
+	    }, {
+	        key: 'getPosts',
+	        value: function getPosts(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            if (props.params.term !== this.props.params.term || willMount) {
+	                this.props.searchSite(props.params.term);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term, isSearch: true }),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts }),
+	                _react2.default.createElement(_footer2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Search;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var posts = _ref.posts;
+
+	    return { posts: posts };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Search);
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _redux = __webpack_require__(189);
 
-	var _reduxThunk = __webpack_require__(320);
+	var _reduxThunk = __webpack_require__(322);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxPromiseMiddleware = __webpack_require__(321);
+	var _reduxPromiseMiddleware = __webpack_require__(323);
 
 	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
-	var _reduxLogger = __webpack_require__(323);
+	var _reduxLogger = __webpack_require__(325);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reducers = __webpack_require__(329);
+	var _reducers = __webpack_require__(331);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -33002,7 +33287,7 @@
 	exports.default = (0, _redux.createStore)(_reducers2.default, appliedMiddleware);
 
 /***/ },
-/* 320 */
+/* 322 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33030,7 +33315,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 321 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33047,7 +33332,7 @@
 
 	exports.default = promiseMiddleware;
 
-	var _isPromise = __webpack_require__(322);
+	var _isPromise = __webpack_require__(324);
 
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 
@@ -33204,7 +33489,7 @@
 	}
 
 /***/ },
-/* 322 */
+/* 324 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33225,7 +33510,7 @@
 	}
 
 /***/ },
-/* 323 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33236,11 +33521,11 @@
 	  value: true
 	});
 
-	var _core = __webpack_require__(324);
+	var _core = __webpack_require__(326);
 
-	var _helpers = __webpack_require__(325);
+	var _helpers = __webpack_require__(327);
 
-	var _defaults = __webpack_require__(328);
+	var _defaults = __webpack_require__(330);
 
 	var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -33343,7 +33628,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 324 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33353,9 +33638,9 @@
 	});
 	exports.printBuffer = printBuffer;
 
-	var _helpers = __webpack_require__(325);
+	var _helpers = __webpack_require__(327);
 
-	var _diff = __webpack_require__(326);
+	var _diff = __webpack_require__(328);
 
 	var _diff2 = _interopRequireDefault(_diff);
 
@@ -33484,7 +33769,7 @@
 	}
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33508,7 +33793,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 326 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33518,7 +33803,7 @@
 	});
 	exports.default = diffLogger;
 
-	var _deepDiff = __webpack_require__(327);
+	var _deepDiff = __webpack_require__(329);
 
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
@@ -33604,7 +33889,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 327 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -34033,7 +34318,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34084,7 +34369,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34095,11 +34380,11 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _posts_reducer = __webpack_require__(330);
+	var _posts_reducer = __webpack_require__(332);
 
 	var _posts_reducer2 = _interopRequireDefault(_posts_reducer);
 
-	var _menu_reducer = __webpack_require__(331);
+	var _menu_reducer = __webpack_require__(333);
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
@@ -34111,7 +34396,7 @@
 	});
 
 /***/ },
-/* 330 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34136,7 +34421,7 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 331 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34159,298 +34444,10 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 333 */,
-/* 334 */,
-/* 335 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _index = __webpack_require__(271);
-
-	var _header = __webpack_require__(297);
-
-	var _header2 = _interopRequireDefault(_header);
-
-	var _main = __webpack_require__(300);
-
-	var _main2 = _interopRequireDefault(_main);
-
-	var _footer = __webpack_require__(318);
-
-	var _footer2 = _interopRequireDefault(_footer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Single = function (_Component) {
-	    _inherits(Single, _Component);
-
-	    function Single() {
-	        _classCallCheck(this, Single);
-
-	        return _possibleConstructorReturn(this, (Single.__proto__ || Object.getPrototypeOf(Single)).apply(this, arguments));
-	    }
-
-	    _createClass(Single, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.getPosts(this.props, true);
-	        }
-	    }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            this.getPosts(nextProps);
-	        }
-	    }, {
-	        key: 'getPosts',
-	        value: function getPosts(props) {
-	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-	            if (props.params.splat !== this.props.params.splat || willMount) {
-	                this.props.fetchPost(props.params.splat);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'section',
-	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term }),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
-	                _react2.default.createElement(_footer2.default, null)
-	            );
-	        }
-	    }]);
-
-	    return Single;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var posts = _ref.posts;
-
-	    return { posts: posts };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Single);
-
-/***/ },
-/* 336 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _index = __webpack_require__(271);
-
-	var _header = __webpack_require__(297);
-
-	var _header2 = _interopRequireDefault(_header);
-
-	var _main = __webpack_require__(300);
-
-	var _main2 = _interopRequireDefault(_main);
-
-	var _footer = __webpack_require__(318);
-
-	var _footer2 = _interopRequireDefault(_footer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_Component) {
-	    _inherits(Search, _Component);
-
-	    function Search() {
-	        _classCallCheck(this, Search);
-
-	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
-	    }
-
-	    _createClass(Search, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.getPosts(this.props, true);
-	        }
-	    }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            this.getPosts(nextProps);
-	        }
-	    }, {
-	        key: 'getPosts',
-	        value: function getPosts(props) {
-	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-	            if (props.params.term !== this.props.params.term || willMount) {
-	                this.props.searchSite(props.params.term);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'section',
-	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term }),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
-	                _react2.default.createElement(_footer2.default, null)
-	            );
-	        }
-	    }]);
-
-	    return Search;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var posts = _ref.posts;
-
-	    return { posts: posts };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Search);
-
-/***/ },
-/* 337 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _index = __webpack_require__(271);
-
-	var _header = __webpack_require__(297);
-
-	var _header2 = _interopRequireDefault(_header);
-
-	var _main = __webpack_require__(300);
-
-	var _main2 = _interopRequireDefault(_main);
-
-	var _footer = __webpack_require__(318);
-
-	var _footer2 = _interopRequireDefault(_footer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Layout = function (_Component) {
-	    _inherits(Layout, _Component);
-
-	    function Layout() {
-	        _classCallCheck(this, Layout);
-
-	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).apply(this, arguments));
-	    }
-
-	    _createClass(Layout, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.getPosts(this.props, true);
-	        }
-	    }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            this.getPosts(nextProps);
-	        }
-	    }, {
-	        key: 'getPosts',
-	        value: function getPosts(props) {
-	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-	            switch (props.route.path) {
-	                case 'search/:term':
-	                    if (props.params.term !== this.props.params.term || willMount) {
-	                        this.props.searchSite(props.params.term);
-	                    }
-	                    break;
-	                case 'page/:pageNum':
-	                default:
-	                    if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
-	                        this.props.fetchPosts(props.params.pageNum || 1);
-	                    }
-	                    break;
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'section',
-	                { className: 'container-fluid' },
-	                _react2.default.createElement(_header2.default, { searchTerm: this.props.params.term }),
-	                _react2.default.createElement(_main2.default, { posts: this.props.posts, pageNum: this.props.params.pageNum || 1 }),
-	                _react2.default.createElement(_footer2.default, null)
-	            );
-	        }
-	    }]);
-
-	    return Layout;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var posts = _ref.posts;
-
-	    return { posts: posts };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPosts: _index.fetchPosts, fetchPost: _index.fetchPost, searchSite: _index.searchSite })(Layout);
 
 /***/ }
 /******/ ]);

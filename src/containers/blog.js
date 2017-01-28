@@ -17,25 +17,15 @@ class Layout extends Component {
     }
 
     getPosts(props, willMount = false) {
-        switch (props.route.path) {
-            case 'search/:term':
-                if (props.params.term !== this.props.params.term || willMount) {
-                    this.props.searchSite(props.params.term);
-                }
-                break;
-            case 'page/:pageNum':
-            default:
-                if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname ) {
-                    this.props.fetchPosts(props.params.pageNum || 1);
-                }
-                break;
+        if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
+            this.props.fetchPosts(props.params.pageNum || 1);
         }
     }
 
     render() {
         return (
             <section className="container-fluid">
-                <Header searchTerm={this.props.params.term}/>
+                <Header />
                 <Main posts={this.props.posts} pageNum={this.props.params.pageNum || 1}/>
                 <Footer />
             </section>

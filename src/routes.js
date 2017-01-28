@@ -1,16 +1,16 @@
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
-import Layout from './containers/blog';
+import Blog from './containers/blog';
 import Single from './containers/single';
 import Search from './containers/search';
 
 export default (
     <Route path="/">
-        <IndexRoute component={Layout}/>
-        <Route path="page/:pageNum" component={Layout} addHandlerKey={true}/>
-        <Route path="search/:term" component={Layout}/>
-        <Route path="category/:slug" component={Layout}/>
+        <IndexRoute component={Blog}/>
+        <Route path="page/:pageNum" component={Blog} addHandlerKey={true}/>
+        <Route path="search/:term" component={Search}/>
+        <Route path="category/:slug" component={Blog}/>
         <Route path="*" component={Single}/>
     </Route>
 );

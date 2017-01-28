@@ -25,8 +25,8 @@ class Single extends Component {
     render() {
         return (
             <section className="container-fluid">
-                <Header searchTerm={this.props.params.term}/>
-                <Main posts={this.props.posts} pageNum={this.props.params.pageNum || 1}/>
+                <Header />
+                <Main posts={this.props.posts} />
                 <Footer />
             </section>
         );
