@@ -62,13 +62,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(322);
+	var _store = __webpack_require__(323);
 
 	var _store2 = _interopRequireDefault(_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(335);
+	__webpack_require__(336);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28537,15 +28537,15 @@
 
 	var _blog2 = _interopRequireDefault(_blog);
 
-	var _search = __webpack_require__(319);
+	var _search = __webpack_require__(320);
 
 	var _search2 = _interopRequireDefault(_search);
 
-	var _category = __webpack_require__(320);
+	var _category = __webpack_require__(321);
 
 	var _category2 = _interopRequireDefault(_category);
 
-	var _single = __webpack_require__(321);
+	var _single = __webpack_require__(322);
 
 	var _single2 = _interopRequireDefault(_single);
 
@@ -28590,7 +28590,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(318);
+	var _footer = __webpack_require__(319);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -30542,7 +30542,7 @@
 
 	var _article2 = _interopRequireDefault(_article);
 
-	var _pageNav = __webpack_require__(317);
+	var _pageNav = __webpack_require__(318);
 
 	var _pageNav2 = _interopRequireDefault(_pageNav);
 
@@ -32780,7 +32780,7 @@
 
 	var _content2 = _interopRequireDefault(_content);
 
-	var _meta = __webpack_require__(336);
+	var _meta = __webpack_require__(317);
 
 	var _meta2 = _interopRequireDefault(_meta);
 
@@ -32998,6 +32998,100 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var Meta = function (_Component) {
+	    _inherits(Meta, _Component);
+
+	    function Meta() {
+	        _classCallCheck(this, Meta);
+
+	        return _possibleConstructorReturn(this, (Meta.__proto__ || Object.getPrototypeOf(Meta)).apply(this, arguments));
+	    }
+
+	    _createClass(Meta, [{
+	        key: 'renderCategories',
+	        value: function renderCategories() {
+	            var _this2 = this;
+
+	            if ('undefined' !== typeof this.props.categories) {
+	                return this.props.categories.map(function (cat, i) {
+	                    if (1 == _this2.props.categories.length || cat.slug !== 'uncategorized') {
+	                        return _react2.default.createElement(
+	                            'span',
+	                            { key: cat.term_id },
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/category/' + cat.slug, className: 'cat-links' },
+	                                cat.name
+	                            ),
+	                            1 < _this2.props.categories.length && i < _this2.props.categories.length - 1 ? ', ' : ''
+	                        );
+	                    }
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'renderDates',
+	        value: function renderDates() {
+	            if ('post' === this.props.type && this.props.isSingle) {
+	                return _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    ' | ',
+	                    _react2.default.createElement(
+	                        'time',
+	                        { dateTime: this.props.date.substring(0, 10) },
+	                        this.props.formattedDate
+	                    )
+	                );
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'meta' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'cats' },
+	                    this.renderCategories(),
+	                    this.renderDates()
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Meta;
+	}(_react.Component);
+
+	exports.default = Meta;
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(216);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var PageNav = function (_Component) {
 	    _inherits(PageNav, _Component);
 
@@ -33075,7 +33169,7 @@
 	exports.default = PageNav;
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33142,7 +33236,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33169,7 +33263,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(318);
+	var _footer = __webpack_require__(319);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33237,7 +33331,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { searchSite: _index.searchSite })(Search);
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33264,7 +33358,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(318);
+	var _footer = __webpack_require__(319);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33332,7 +33426,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromCat: _index.fetchPostsFromCat })(Category);
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33359,7 +33453,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(318);
+	var _footer = __webpack_require__(319);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33427,7 +33521,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPost: _index.fetchPost })(Single);
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33438,19 +33532,19 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _reduxThunk = __webpack_require__(323);
+	var _reduxThunk = __webpack_require__(324);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxPromiseMiddleware = __webpack_require__(324);
+	var _reduxPromiseMiddleware = __webpack_require__(325);
 
 	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
-	var _reduxLogger = __webpack_require__(326);
+	var _reduxLogger = __webpack_require__(327);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reducers = __webpack_require__(332);
+	var _reducers = __webpack_require__(333);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -33461,7 +33555,7 @@
 	exports.default = (0, _redux.createStore)(_reducers2.default, appliedMiddleware);
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33489,7 +33583,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33506,7 +33600,7 @@
 
 	exports.default = promiseMiddleware;
 
-	var _isPromise = __webpack_require__(325);
+	var _isPromise = __webpack_require__(326);
 
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 
@@ -33663,7 +33757,7 @@
 	}
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33684,7 +33778,7 @@
 	}
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33695,11 +33789,11 @@
 	  value: true
 	});
 
-	var _core = __webpack_require__(327);
+	var _core = __webpack_require__(328);
 
-	var _helpers = __webpack_require__(328);
+	var _helpers = __webpack_require__(329);
 
-	var _defaults = __webpack_require__(331);
+	var _defaults = __webpack_require__(332);
 
 	var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -33802,7 +33896,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33812,9 +33906,9 @@
 	});
 	exports.printBuffer = printBuffer;
 
-	var _helpers = __webpack_require__(328);
+	var _helpers = __webpack_require__(329);
 
-	var _diff = __webpack_require__(329);
+	var _diff = __webpack_require__(330);
 
 	var _diff2 = _interopRequireDefault(_diff);
 
@@ -33943,7 +34037,7 @@
 	}
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -33967,7 +34061,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33977,7 +34071,7 @@
 	});
 	exports.default = diffLogger;
 
-	var _deepDiff = __webpack_require__(330);
+	var _deepDiff = __webpack_require__(331);
 
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
@@ -34063,7 +34157,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -34492,7 +34586,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34543,7 +34637,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34554,11 +34648,11 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _posts_reducer = __webpack_require__(333);
+	var _posts_reducer = __webpack_require__(334);
 
 	var _posts_reducer2 = _interopRequireDefault(_posts_reducer);
 
-	var _menu_reducer = __webpack_require__(334);
+	var _menu_reducer = __webpack_require__(335);
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
@@ -34570,7 +34664,7 @@
 	});
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34596,7 +34690,7 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34619,104 +34713,10 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 336 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(216);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Meta = function (_Component) {
-	    _inherits(Meta, _Component);
-
-	    function Meta() {
-	        _classCallCheck(this, Meta);
-
-	        return _possibleConstructorReturn(this, (Meta.__proto__ || Object.getPrototypeOf(Meta)).apply(this, arguments));
-	    }
-
-	    _createClass(Meta, [{
-	        key: 'renderCategories',
-	        value: function renderCategories() {
-	            var _this2 = this;
-
-	            if ('undefined' !== typeof this.props.categories) {
-	                return this.props.categories.map(function (cat, i) {
-	                    if (1 == _this2.props.categories.length || cat.slug !== 'uncategorized') {
-	                        return _react2.default.createElement(
-	                            'span',
-	                            { key: cat.term_id },
-	                            _react2.default.createElement(
-	                                _reactRouter.Link,
-	                                { to: '/category/' + cat.slug, className: 'cat-links' },
-	                                cat.name
-	                            ),
-	                            1 < _this2.props.categories.length && i < _this2.props.categories.length - 1 ? ', ' : ''
-	                        );
-	                    }
-	                });
-	            }
-	        }
-	    }, {
-	        key: 'renderDates',
-	        value: function renderDates() {
-	            if ('post' === this.props.type && this.props.isSingle) {
-	                return _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    ' | ',
-	                    _react2.default.createElement(
-	                        'time',
-	                        { dateTime: this.props.date.substring(0, 10) },
-	                        this.props.formattedDate
-	                    )
-	                );
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'meta' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'cats' },
-	                    this.renderCategories(),
-	                    this.renderDates()
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Meta;
-	}(_react.Component);
-
-	exports.default = Meta;
 
 /***/ }
 /******/ ]);
