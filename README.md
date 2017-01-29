@@ -11,7 +11,7 @@ If you install it in WordPress v4.7 or greater it will work out of the box and h
 
 **Existing features include:**
 - Dynamic menus (main menu + footer menu)
-- "Template pages" equivalence for index.php, single.php, search.php, category.php... but in React/Redux
+- "Template pages" equivalence for [index.php, single.php, search.php, category.php](https://github.com/jackreichert/a-wp-react-redux-theme/tree/master/src/containers)... but in React/Redux
 - Search
 - Category archive pages
 - Bootstrap 4
