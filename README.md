@@ -23,6 +23,9 @@ If you install it in WordPress v4.7 or greater it will work out of the box and h
 - Static home page
 - more...
 
+## What does it look like?
+![it looks like this](screenshot.png)
+
 ## Want to help out?
 Or do you just want to use it yourself? Be my guest. 
 I'd love to see it out in the wild, so please share how you're using it. 
