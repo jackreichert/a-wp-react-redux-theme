@@ -23,7 +23,7 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
 }
 
-export function fetchPostsFromTax(tax = 'categories', taxId = 'uncategorized', pageNum = 1, post_type = 'posts') {
+export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
         axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`)
             .then(response => {

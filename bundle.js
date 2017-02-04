@@ -28714,7 +28714,7 @@
 
 	function fetchPostsFromTax() {
 	    var tax = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'categories';
-	    var taxId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'uncategorized';
+	    var taxId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 	    var pageNum = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 	    var post_type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'posts';
 
