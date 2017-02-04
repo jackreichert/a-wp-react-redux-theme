@@ -17,7 +17,7 @@ class Category extends Component {
             this.props.getTaxIdFromSlug('categories', nextProps.params.slug);
         }
 
-        if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
+        if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax) || nextProps.params.pageNum !== this.props.params.pageNum) {
             this.props.fetchPostsFromTax('categories', nextProps.tax[0].id, nextProps.params.pageNum);
         }
     }
