@@ -1,6 +1,6 @@
 import {FETCH_POSTS, FETCH_POST, SEARCH_POSTS, CATEGORY_POSTS} from '../actions';
 
-export default function (state = [], action) {
+export default (state = [], action) => {
     switch (action.type) {
         case FETCH_POSTS:
         case FETCH_POST:

@@ -4,6 +4,7 @@ export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
 export const CATEGORY_POSTS = 'CATEGORY_POSTS';
+export const FETCH_TAX_INFO = 'FETCH_TAX_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
@@ -22,9 +23,9 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
 }
 
-export function fetchPostsFromCat(slug = 'uncategorized', pageNum = 1, post_type = 'posts') {
+export function fetchPostsFromTax(tax = 'categories', taxId = 'uncategorized', pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&categories=${getCategoryIdFromSlug(slug)}&page=${pageNum}`)
+        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`)
             .then(response => {
                 dispatch({
                     type: CATEGORY_POSTS,
@@ -34,10 +35,16 @@ export function fetchPostsFromCat(slug = 'uncategorized', pageNum = 1, post_type
     }
 }
 
-function getCategoryIdFromSlug(slug) {
-    return RT_API['categories'].filter(cat => {
-        return cat.slug === slug
-    })[0].term_id;
+export function getTaxIdFromSlug(tax, slug) {
+    return function (dispatch) {
+        axios.get(`${WP_API_ENDPOINT}${tax}?slug=${slug}`)
+            .then(response => {
+                dispatch({
+                    type: FETCH_TAX_INFO,
+                    payload: response.data
+                });
+            });
+    }
 }
 
 export function fetchPost(prettyPermalink) {
@@ -47,6 +54,18 @@ export function fetchPost(prettyPermalink) {
                 dispatch({
                     type: FETCH_POST,
                     payload: [response.data]
+                });
+            });
+    }
+}
+
+export function fetchTaxInfo(tax, tagIds) {
+    return function (dispatch) {
+        axios.get(`${WP_API_ENDPOINT}${tax}/?include=${tagIds}`)
+            .then(response => {
+                dispatch({
+                    type: FETCH_TAX_INFO,
+                    payload: response.data
                 });
             });
     }

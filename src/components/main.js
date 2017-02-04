@@ -38,7 +38,8 @@ export default class Main extends Component {
                             link={post.link}
                             isSingle={this.isSingle()}
                             featuredImage={post.featured_image_url}
-                            categories={this.getCategories(post.categories)}/>;
+                            categories={this.getCategories(post.categories)}
+                            tags={post.tags || []}/>;
         });
     }
 

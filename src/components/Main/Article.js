@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Title from './article/title';
 import Content from './article/content';
 import Meta from './article/meta';
+import PostFooter from '../../containers/parts/postFooter';
 
 export default class Article extends Component {
     static get defaultProps() {
@@ -41,6 +42,7 @@ export default class Article extends Component {
                         {this.props.content}
                     </Content>
                 </div>
+                <PostFooter isSingle={this.props.isSingle} tags={this.props.tags} />
             </article>
         );
     }

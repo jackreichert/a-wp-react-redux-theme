@@ -14,12 +14,12 @@ If you install it in WordPress v4.7 or greater it will work out of the box and h
 - "Template pages" equivalence for index.php, single.php, search.php, category.php... but in React/Redux
 - Search
 - Category archive pages
+- Tags
 - Bootstrap 4
 
 ## To Do
 - Comments
 - Widgets
-- Tags
 - Static home page
 - more...
 

@@ -28545,6 +28545,10 @@
 
 	var _category2 = _interopRequireDefault(_category);
 
+	var _tag = __webpack_require__(337);
+
+	var _tag2 = _interopRequireDefault(_tag);
+
 	var _single = __webpack_require__(322);
 
 	var _single2 = _interopRequireDefault(_single);
@@ -28559,6 +28563,8 @@
 	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _search2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _category2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug/:pageNum', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'tag/:slug', component: _tag2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'tag/:slug/:pageNum', component: _tag2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: _single2.default })
 	);
 
@@ -28666,10 +28672,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.FETCH_MENU = exports.CATEGORY_POSTS = exports.SEARCH_POSTS = exports.FETCH_POST = exports.FETCH_POSTS = undefined;
+	exports.FETCH_MENU = exports.FETCH_TAX_INFO = exports.CATEGORY_POSTS = exports.SEARCH_POSTS = exports.FETCH_POST = exports.FETCH_POSTS = undefined;
 	exports.fetchPosts = fetchPosts;
-	exports.fetchPostsFromCat = fetchPostsFromCat;
+	exports.fetchPostsFromTax = fetchPostsFromTax;
+	exports.getTaxIdFromSlug = getTaxIdFromSlug;
 	exports.fetchPost = fetchPost;
+	exports.fetchTaxInfo = fetchTaxInfo;
 	exports.fetchMenu = fetchMenu;
 	exports.searchSite = searchSite;
 
@@ -28683,6 +28691,7 @@
 	var FETCH_POST = exports.FETCH_POST = 'FETCH_POST';
 	var SEARCH_POSTS = exports.SEARCH_POSTS = 'SEARCH_POSTS';
 	var CATEGORY_POSTS = exports.CATEGORY_POSTS = 'CATEGORY_POSTS';
+	var FETCH_TAX_INFO = exports.FETCH_TAX_INFO = 'FETCH_TAX_INFO';
 	var FETCH_MENU = exports.FETCH_MENU = 'FETCH_MENU';
 
 	var WP_API_ENDPOINT = RT_API.root + 'wp/v2/';
@@ -28703,13 +28712,14 @@
 	    };
 	}
 
-	function fetchPostsFromCat() {
-	    var slug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uncategorized';
-	    var pageNum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-	    var post_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'posts';
+	function fetchPostsFromTax() {
+	    var tax = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'categories';
+	    var taxId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'uncategorized';
+	    var pageNum = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+	    var post_type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'posts';
 
 	    return function (dispatch) {
-	        _axios2.default.get('' + WP_API_ENDPOINT + post_type + '?_embed&categories=' + getCategoryIdFromSlug(slug) + '&page=' + pageNum).then(function (response) {
+	        _axios2.default.get('' + WP_API_ENDPOINT + post_type + '?_embed&' + tax + '=' + taxId + '&page=' + pageNum).then(function (response) {
 	            dispatch({
 	                type: CATEGORY_POSTS,
 	                payload: response.data
@@ -28718,10 +28728,15 @@
 	    };
 	}
 
-	function getCategoryIdFromSlug(slug) {
-	    return RT_API['categories'].filter(function (cat) {
-	        return cat.slug === slug;
-	    })[0].term_id;
+	function getTaxIdFromSlug(tax, slug) {
+	    return function (dispatch) {
+	        _axios2.default.get('' + WP_API_ENDPOINT + tax + '?slug=' + slug).then(function (response) {
+	            dispatch({
+	                type: FETCH_TAX_INFO,
+	                payload: response.data
+	            });
+	        });
+	    };
 	}
 
 	function fetchPost(prettyPermalink) {
@@ -28730,6 +28745,17 @@
 	            dispatch({
 	                type: FETCH_POST,
 	                payload: [response.data]
+	            });
+	        });
+	    };
+	}
+
+	function fetchTaxInfo(tax, tagIds) {
+	    return function (dispatch) {
+	        _axios2.default.get('' + WP_API_ENDPOINT + tax + '/?include=' + tagIds).then(function (response) {
+	            dispatch({
+	                type: FETCH_TAX_INFO,
+	                payload: response.data
 	            });
 	        });
 	    };
@@ -30604,7 +30630,8 @@
 	                    link: post.link,
 	                    isSingle: _this2.isSingle(),
 	                    featuredImage: post.featured_image_url,
-	                    categories: _this2.getCategories(post.categories) });
+	                    categories: _this2.getCategories(post.categories),
+	                    tags: post.tags || [] });
 	            });
 	        }
 	    }, {
@@ -32784,6 +32811,10 @@
 
 	var _meta2 = _interopRequireDefault(_meta);
 
+	var _postFooter = __webpack_require__(338);
+
+	var _postFooter2 = _interopRequireDefault(_postFooter);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32840,7 +32871,8 @@
 	                        { isSingle: this.props.isSingle },
 	                        this.props.content
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement(_postFooter2.default, { isSingle: this.props.isSingle, tags: this.props.tags })
 	            );
 	        }
 	    }], [{
@@ -33382,20 +33414,17 @@
 	    _createClass(Category, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
-	            this.getPosts(this.props, true);
+	            this.props.getTaxIdFromSlug('categories', this.props.params.slug);
 	        }
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
-	            this.getPosts(nextProps);
-	        }
-	    }, {
-	        key: 'getPosts',
-	        value: function getPosts(props) {
-	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	            if (this.props.params.slug !== nextProps.params.slug) {
+	                this.props.getTaxIdFromSlug('categories', nextProps.params.slug);
+	            }
 
-	            if (props.params.slug !== this.props.params.slug || willMount || props.params.pageNum !== this.props.params.pageNum) {
-	                this.props.fetchPostsFromCat(props.params.slug, props.params.pageNum);
+	            if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
+	                this.props.fetchPostsFromTax('categories', nextProps.tax[0].id, nextProps.params.pageNum);
 	            }
 	        }
 	    }, {
@@ -33418,12 +33447,13 @@
 	}(_react.Component);
 
 	function mapStateToProps(_ref) {
-	    var posts = _ref.posts;
+	    var posts = _ref.posts,
+	        tax = _ref.tax;
 
-	    return { posts: posts };
+	    return { posts: posts, tax: tax };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromCat: _index.fetchPostsFromCat })(Category);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromTax: _index.fetchPostsFromTax, getTaxIdFromSlug: _index.getTaxIdFromSlug })(Category);
 
 /***/ },
 /* 322 */
@@ -34656,11 +34686,16 @@
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
+	var _tax_reducer = __webpack_require__(339);
+
+	var _tax_reducer2 = _interopRequireDefault(_tax_reducer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = (0, _redux.combineReducers)({
 	    posts: _posts_reducer2.default,
-	    menu: _menu_reducer2.default
+	    menu: _menu_reducer2.default,
+	    tax: _tax_reducer2.default
 	});
 
 /***/ },
@@ -34672,6 +34707,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _actions = __webpack_require__(271);
 
 	exports.default = function () {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -34686,8 +34723,6 @@
 	    }
 	    return state;
 	};
-
-	var _actions = __webpack_require__(271);
 
 /***/ },
 /* 335 */
@@ -34717,6 +34752,217 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 337 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _index = __webpack_require__(271);
+
+	var _header = __webpack_require__(297);
+
+	var _header2 = _interopRequireDefault(_header);
+
+	var _main = __webpack_require__(300);
+
+	var _main2 = _interopRequireDefault(_main);
+
+	var _footer = __webpack_require__(319);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Category = function (_Component) {
+	    _inherits(Category, _Component);
+
+	    function Category() {
+	        _classCallCheck(this, Category);
+
+	        return _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).apply(this, arguments));
+	    }
+
+	    _createClass(Category, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.getTaxIdFromSlug('tags', this.props.params.slug);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (this.props.params.slug !== nextProps.params.slug) {
+	                this.props.getTaxIdFromSlug('tags', nextProps.params.slug);
+	            }
+
+	            if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
+	                this.props.fetchPostsFromTax('tags', nextProps.tax[0].id, nextProps.params.pageNum);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'section',
+	                { className: 'container-fluid' },
+	                _react2.default.createElement(_header2.default, null),
+	                _react2.default.createElement(_main2.default, { posts: this.props.posts,
+	                    pageNum: this.props.params.pageNum || 1,
+	                    route: this.props.route.path,
+	                    slug: this.props.params.slug || '' }),
+	                _react2.default.createElement(_footer2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Category;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var posts = _ref.posts,
+	        tax = _ref.tax;
+
+	    return { posts: posts, tax: tax };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromTax: _index.fetchPostsFromTax, getTaxIdFromSlug: _index.getTaxIdFromSlug })(Category);
+
+/***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _reactRouter = __webpack_require__(216);
+
+	var _actions = __webpack_require__(271);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PostFooter = function (_Component) {
+	    _inherits(PostFooter, _Component);
+
+	    function PostFooter() {
+	        _classCallCheck(this, PostFooter);
+
+	        return _possibleConstructorReturn(this, (PostFooter.__proto__ || Object.getPrototypeOf(PostFooter)).apply(this, arguments));
+	    }
+
+	    _createClass(PostFooter, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.getTagsInfo(this.props, true);
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.getTagsInfo(nextProps);
+	        }
+	    }, {
+	        key: 'getTagsInfo',
+	        value: function getTagsInfo(props) {
+	            var willMount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            if ((willMount || props.tags !== this.props.tags) && props.tags.length && props.isSingle) {
+	                this.props.fetchTaxInfo('tags', props.tags);
+	            }
+	        }
+	    }, {
+	        key: 'renderTags',
+	        value: function renderTags() {
+	            return this.props.tax.map(function (tag) {
+	                return _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { className: 'nav-link', to: '/tag/' + tag.name, key: tag.id },
+	                    tag.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return this.props.isSingle && this.props.tags.length ? _react2.default.createElement(
+	                'footer',
+	                { className: 'card-footer text-muted nav' },
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'nav-link disabled' },
+	                    'Tags:'
+	                ),
+	                this.renderTags()
+	            ) : _react2.default.createElement('footer', null);
+	        }
+	    }]);
+
+	    return PostFooter;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var tax = _ref.tax;
+
+	    return { tax: tax };
+	}
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchTaxInfo: _actions.fetchTaxInfo })(PostFooter);
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _actions = __webpack_require__(271);
+
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _actions.FETCH_TAX_INFO:
+	            return action.payload;
+	    }
+	    return state;
+	};
 
 /***/ }
 /******/ ]);

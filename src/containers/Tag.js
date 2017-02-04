@@ -9,16 +9,16 @@ import Footer from '../components/footer';
 
 class Category extends Component {
     componentWillMount() {
-        this.props.getTaxIdFromSlug('categories', this.props.params.slug);
+        this.props.getTaxIdFromSlug('tags', this.props.params.slug);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.params.slug !== nextProps.params.slug) {
-            this.props.getTaxIdFromSlug('categories', nextProps.params.slug);
+            this.props.getTaxIdFromSlug('tags', nextProps.params.slug);
         }
 
         if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
-            this.props.fetchPostsFromTax('categories', nextProps.tax[0].id, nextProps.params.pageNum);
+            this.props.fetchPostsFromTax('tags', nextProps.tax[0].id, nextProps.params.pageNum);
         }
     }
 
