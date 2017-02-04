@@ -7,11 +7,11 @@ I wrote a bit about the journey [on my blog](https://www.jackreichert.com/2017/0
 I'll update more about the process as I complete the *To Do* list below.
 
 ## Current Features
-If you install it in WordPress v4.7 or greater it will work out of the box and have many of the features you'd want in a simple blog.
+If you install it in WordPress v4.7 or greater **it will work out of the box** and have many of the features you'd want in a simple blog.
 
 **Existing features include:**
 - Dynamic menus (main menu + footer menu)
-- "Template pages" equivalence for index.php, single.php, search.php, category.php... but in React/Redux
+- "Template pages" equivalence for [index.php, single.php, search.php, category.php](https://github.com/jackreichert/a-wp-react-redux-theme/tree/master/src/containers)... but in React/Redux
 - Search
 - Category archive pages
 - Tags
