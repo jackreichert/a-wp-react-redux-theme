@@ -25,7 +25,8 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'root'       => esc_url_raw( rest_url() ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'siteName'   => get_bloginfo( 'name' ),
-				'categories' => get_categories( [ 'hide_empty' => 0 ] )
+				'categories' => get_categories( [ 'hide_empty' => 0 ] ),
+				'current_user' => wp_get_current_user()
 			) );
 			wp_enqueue_style( get_stylesheet(), get_template_directory_uri() . '/bundle.css' );
 		}
