@@ -31,6 +31,7 @@ export default class Main extends Component {
         return posts.map(post => {
             return <Article key={post.id}
                             type={post.type}
+                            pId={post.id}
                             title={post.title.rendered}
                             content={this.getContentOrExcerpt(post)}
                             date={post.date}

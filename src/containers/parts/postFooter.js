@@ -4,6 +4,8 @@ import {Link} from 'react-router';
 
 import {fetchTaxInfo} from '../../actions';
 
+import Comments from './comments';
+
 class PostFooter extends Component {
     componentWillMount() {
         this.getTagsInfo(this.props, true);
@@ -20,16 +22,21 @@ class PostFooter extends Component {
     }
 
     renderTags() {
-        return this.props.tax.map(tag => {
-            return <Link className="nav-link" to={`/tag/${tag.name}`} key={tag.id}>{tag.name}</Link>
-        });
+        return this.props.tags.length ?
+            <div className="tags nav">
+                <span className="nav-link disabled">Tags:</span>
+                {this.props.tax.map(tag => {
+                    return <Link className="nav-link" to={`/tag/${tag.name}`} key={tag.id}>{tag.name}</Link>
+                })}
+            </div>
+            : <span/>;
     }
 
     render() {
-        return this.props.isSingle && this.props.tags.length ?
-            <footer className="card-footer text-muted nav">
-                <span className="nav-link disabled">Tags:</span>
+        return this.props.isSingle ?
+            <footer className="card-footer text-muted">
                 {this.renderTags()}
+                <Comments pId={this.props.pId}/>
             </footer> :
             <footer />;
     }

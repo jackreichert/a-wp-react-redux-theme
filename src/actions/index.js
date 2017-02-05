@@ -6,6 +6,7 @@ export const SEARCH_POSTS = 'SEARCH_POSTS';
 export const CATEGORY_POSTS = 'CATEGORY_POSTS';
 export const FETCH_TAX_INFO = 'FETCH_TAX_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
+export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
@@ -94,3 +95,16 @@ export function searchSite(term, post_type = 'posts') {
             })
     }
 }
+
+export function fetchComments(postId) {
+    return function (dispatch) {
+        axios.get(`${WP_API_ENDPOINT}comments?post=${postId}`)
+            .then(response => {
+                dispatch({
+                    type: FETCH_COMMENTS,
+                    payload: response.data
+                });
+            })
+    }
+}
+
