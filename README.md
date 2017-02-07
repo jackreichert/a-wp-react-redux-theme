@@ -21,6 +21,8 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 - Comments
 - Widgets
 - Static home page
+- Analytics reporting
+- SEO
 - more...
 
 ## What does it look like?
