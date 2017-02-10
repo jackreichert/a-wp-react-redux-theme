@@ -34,8 +34,9 @@ class PostFooter extends Component {
 
     render() {
         return this.props.isSingle ?
-            <footer className="card-footer text-muted">
+            <footer className="card-footer">
                 {this.renderTags()}
+                <hr/>
                 <Comments pId={this.props.pId}/>
             </footer> :
             <footer />;

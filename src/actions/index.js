@@ -98,7 +98,7 @@ export function searchSite(term, post_type = 'posts') {
 
 export function fetchComments(postId) {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}comments?post=${postId}`)
+        axios.get(`${WP_API_ENDPOINT}comments?post=${postId}&orderby=parent`)
             .then(response => {
                 dispatch({
                     type: FETCH_COMMENTS,

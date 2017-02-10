@@ -62,13 +62,13 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(325);
+	var _store = __webpack_require__(326);
 
 	var _store2 = _interopRequireDefault(_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(339);
+	__webpack_require__(341);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -28537,19 +28537,19 @@
 
 	var _blog2 = _interopRequireDefault(_blog);
 
-	var _search = __webpack_require__(321);
+	var _search = __webpack_require__(322);
 
 	var _search2 = _interopRequireDefault(_search);
 
-	var _category = __webpack_require__(322);
+	var _category = __webpack_require__(323);
 
 	var _category2 = _interopRequireDefault(_category);
 
-	var _tag = __webpack_require__(323);
+	var _tag = __webpack_require__(324);
 
 	var _tag2 = _interopRequireDefault(_tag);
 
-	var _single = __webpack_require__(324);
+	var _single = __webpack_require__(325);
 
 	var _single2 = _interopRequireDefault(_single);
 
@@ -28596,7 +28596,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(320);
+	var _footer = __webpack_require__(321);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -28789,7 +28789,7 @@
 
 	function fetchComments(postId) {
 	    return function (dispatch) {
-	        _axios2.default.get(WP_API_ENDPOINT + 'comments?post=' + postId).then(function (response) {
+	        _axios2.default.get(WP_API_ENDPOINT + 'comments?post=' + postId + '&orderby=parent').then(function (response) {
 	            dispatch({
 	                type: FETCH_COMMENTS,
 	                payload: response.data
@@ -30581,7 +30581,7 @@
 
 	var _article2 = _interopRequireDefault(_article);
 
-	var _pageNav = __webpack_require__(319);
+	var _pageNav = __webpack_require__(320);
 
 	var _pageNav2 = _interopRequireDefault(_pageNav);
 
@@ -33134,7 +33134,7 @@
 
 	var _actions = __webpack_require__(271);
 
-	var _comments = __webpack_require__(340);
+	var _comments = __webpack_require__(319);
 
 	var _comments2 = _interopRequireDefault(_comments);
 
@@ -33199,8 +33199,9 @@
 	        value: function render() {
 	            return this.props.isSingle ? _react2.default.createElement(
 	                'footer',
-	                { className: 'card-footer text-muted' },
+	                { className: 'card-footer' },
 	                this.renderTags(),
+	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(_comments2.default, { pId: this.props.pId })
 	            ) : _react2.default.createElement('footer', null);
 	        }
@@ -33218,6 +33219,156 @@
 
 /***/ },
 /* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _actions = __webpack_require__(271);
+
+	var _content = __webpack_require__(316);
+
+	var _content2 = _interopRequireDefault(_content);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Comments = function (_Component) {
+	    _inherits(Comments, _Component);
+
+	    function Comments() {
+	        _classCallCheck(this, Comments);
+
+	        return _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).apply(this, arguments));
+	    }
+
+	    _createClass(Comments, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.fetchComments(this.props.pId);
+	        }
+	    }, {
+	        key: 'nestComments',
+	        value: function nestComments(comments) {
+	            var nestedComments = {};
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	                for (var _iterator = comments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var comment = _step.value;
+
+	                    if (comment.id in nestedComments) {
+	                        nestedComments[comment.id].comment = comment;
+	                    } else {
+	                        nestedComments[comment.id] = { comment: comment, children: {} };
+	                    }
+
+	                    if (comment.parent in nestedComments) {
+	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
+	                        delete nestedComments[comment.id];
+	                    } else {
+	                        nestedComments[comment.parent] = { comment: {}, children: {} };
+	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
+	                        delete nestedComments[comment.id];
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+
+	            return nestedComments;
+	        }
+	    }, {
+	        key: 'renderComments',
+	        value: function renderComments(comments) {
+	            var _this2 = this;
+
+	            if (Array.isArray(comments)) {
+	                return _react2.default.createElement(
+	                    'ul',
+	                    { className: 'comments' },
+	                    comments.map(function (comment) {
+	                        return _react2.default.createElement(
+	                            'li',
+	                            { key: comment.id, className: 'comment' },
+	                            _react2.default.createElement(
+	                                _content2.default,
+	                                null,
+	                                comment.content.rendered
+	                            ),
+	                            _react2.default.createElement(
+	                                'i',
+	                                null,
+	                                comment.author_name
+	                            ),
+	                            _this2.renderComments(comments.children)
+	                        );
+	                    })
+	                );
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            if (this.props.comments.length) {
+	                var nestedComments = this.nestComments(this.props.comments);
+	                console.log("nestedComments", nestedComments);
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'comments' },
+	                    this.renderComments(this.props.comments)
+	                );
+	            }
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'comments' },
+	                'No Comments'
+	            );
+	        }
+	    }]);
+
+	    return Comments;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var comments = _ref.comments;
+
+	    return { comments: comments };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchComments: _actions.fetchComments })(Comments);
+
+/***/ },
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33319,7 +33470,7 @@
 	exports.default = PageNav;
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33386,7 +33537,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33413,7 +33564,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(320);
+	var _footer = __webpack_require__(321);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33481,7 +33632,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { searchSite: _index.searchSite })(Search);
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33508,7 +33659,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(320);
+	var _footer = __webpack_require__(321);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33574,7 +33725,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromTax: _index.fetchPostsFromTax, getTaxIdFromSlug: _index.getTaxIdFromSlug })(Category);
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33601,7 +33752,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(320);
+	var _footer = __webpack_require__(321);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33667,7 +33818,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPostsFromTax: _index.fetchPostsFromTax, getTaxIdFromSlug: _index.getTaxIdFromSlug })(Category);
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33694,7 +33845,7 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _footer = __webpack_require__(320);
+	var _footer = __webpack_require__(321);
 
 	var _footer2 = _interopRequireDefault(_footer);
 
@@ -33762,7 +33913,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchPost: _index.fetchPost })(Single);
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33773,19 +33924,19 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _reduxThunk = __webpack_require__(326);
+	var _reduxThunk = __webpack_require__(327);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxPromiseMiddleware = __webpack_require__(327);
+	var _reduxPromiseMiddleware = __webpack_require__(328);
 
 	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
-	var _reduxLogger = __webpack_require__(329);
+	var _reduxLogger = __webpack_require__(330);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reducers = __webpack_require__(335);
+	var _reducers = __webpack_require__(336);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -33796,7 +33947,7 @@
 	exports.default = (0, _redux.createStore)(_reducers2.default, appliedMiddleware);
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33824,7 +33975,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33841,7 +33992,7 @@
 
 	exports.default = promiseMiddleware;
 
-	var _isPromise = __webpack_require__(328);
+	var _isPromise = __webpack_require__(329);
 
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 
@@ -33998,7 +34149,7 @@
 	}
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34019,7 +34170,7 @@
 	}
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34030,11 +34181,11 @@
 	  value: true
 	});
 
-	var _core = __webpack_require__(330);
+	var _core = __webpack_require__(331);
 
-	var _helpers = __webpack_require__(331);
+	var _helpers = __webpack_require__(332);
 
-	var _defaults = __webpack_require__(334);
+	var _defaults = __webpack_require__(335);
 
 	var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -34137,7 +34288,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34147,9 +34298,9 @@
 	});
 	exports.printBuffer = printBuffer;
 
-	var _helpers = __webpack_require__(331);
+	var _helpers = __webpack_require__(332);
 
-	var _diff = __webpack_require__(332);
+	var _diff = __webpack_require__(333);
 
 	var _diff2 = _interopRequireDefault(_diff);
 
@@ -34278,7 +34429,7 @@
 	}
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34302,7 +34453,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34312,7 +34463,7 @@
 	});
 	exports.default = diffLogger;
 
-	var _deepDiff = __webpack_require__(333);
+	var _deepDiff = __webpack_require__(334);
 
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
@@ -34398,7 +34549,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -34827,7 +34978,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -34878,7 +35029,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34889,19 +35040,19 @@
 
 	var _redux = __webpack_require__(189);
 
-	var _posts_reducer = __webpack_require__(336);
+	var _posts_reducer = __webpack_require__(337);
 
 	var _posts_reducer2 = _interopRequireDefault(_posts_reducer);
 
-	var _menu_reducer = __webpack_require__(337);
+	var _menu_reducer = __webpack_require__(338);
 
 	var _menu_reducer2 = _interopRequireDefault(_menu_reducer);
 
-	var _tax_reducer = __webpack_require__(338);
+	var _tax_reducer = __webpack_require__(339);
 
 	var _tax_reducer2 = _interopRequireDefault(_tax_reducer);
 
-	var _comments_reducer = __webpack_require__(341);
+	var _comments_reducer = __webpack_require__(340);
 
 	var _comments_reducer2 = _interopRequireDefault(_comments_reducer);
 
@@ -34915,7 +35066,7 @@
 	});
 
 /***/ },
-/* 336 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34941,7 +35092,7 @@
 	};
 
 /***/ },
-/* 337 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34964,7 +35115,7 @@
 	var _actions = __webpack_require__(271);
 
 /***/ },
-/* 338 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34987,108 +35138,7 @@
 	};
 
 /***/ },
-/* 339 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _actions = __webpack_require__(271);
-
-	var _content = __webpack_require__(316);
-
-	var _content2 = _interopRequireDefault(_content);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Comments = function (_Component) {
-	    _inherits(Comments, _Component);
-
-	    function Comments() {
-	        _classCallCheck(this, Comments);
-
-	        return _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).apply(this, arguments));
-	    }
-
-	    _createClass(Comments, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.props.fetchComments(this.props.pId);
-	        }
-	    }, {
-	        key: 'renderComments',
-	        value: function renderComments() {
-	            return this.props.comments.map(function (comment) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { key: comment.id },
-	                    _react2.default.createElement(
-	                        _content2.default,
-	                        null,
-	                        comment.content.rendered
-	                    ),
-	                    _react2.default.createElement(
-	                        'i',
-	                        null,
-	                        comment.author_name
-	                    )
-	                );
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            if (this.props.comments.length) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'comments' },
-	                    this.renderComments()
-	                );
-	            }
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'comments' },
-	                'No Comments'
-	            );
-	        }
-	    }]);
-
-	    return Comments;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var comments = _ref.comments;
-
-	    return { comments: comments };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchComments: _actions.fetchComments })(Comments);
-
-/***/ },
-/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35109,6 +35159,12 @@
 	    }
 	    return state;
 	};
+
+/***/ },
+/* 341 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
