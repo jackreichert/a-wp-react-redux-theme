@@ -33134,7 +33134,7 @@
 
 	var _actions = __webpack_require__(271);
 
-	var _comments = __webpack_require__(319);
+	var _comments = __webpack_require__(343);
 
 	var _comments2 = _interopRequireDefault(_comments);
 
@@ -33218,154 +33218,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchTaxInfo: _actions.fetchTaxInfo })(PostFooter);
 
 /***/ },
-/* 319 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(178);
-
-	var _actions = __webpack_require__(271);
-
-	var _content = __webpack_require__(316);
-
-	var _content2 = _interopRequireDefault(_content);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Comments = function (_Component) {
-	    _inherits(Comments, _Component);
-
-	    function Comments() {
-	        _classCallCheck(this, Comments);
-
-	        return _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).apply(this, arguments));
-	    }
-
-	    _createClass(Comments, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.props.fetchComments(this.props.pId);
-	        }
-	    }, {
-	        key: 'nestComments',
-	        value: function nestComments(comments) {
-	            var nestedComments = {};
-	            var _iteratorNormalCompletion = true;
-	            var _didIteratorError = false;
-	            var _iteratorError = undefined;
-
-	            try {
-	                for (var _iterator = comments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                    var comment = _step.value;
-
-	                    if (comment.id in nestedComments) {
-	                        nestedComments[comment.id].comment = comment;
-	                    } else {
-	                        nestedComments[comment.id] = { comment: comment, children: {} };
-	                    }
-
-	                    if (comment.parent in nestedComments) {
-	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
-	                        delete nestedComments[comment.id];
-	                    } else {
-	                        nestedComments[comment.parent] = { comment: {}, children: {} };
-	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
-	                        delete nestedComments[comment.id];
-	                    }
-	                }
-	            } catch (err) {
-	                _didIteratorError = true;
-	                _iteratorError = err;
-	            } finally {
-	                try {
-	                    if (!_iteratorNormalCompletion && _iterator.return) {
-	                        _iterator.return();
-	                    }
-	                } finally {
-	                    if (_didIteratorError) {
-	                        throw _iteratorError;
-	                    }
-	                }
-	            }
-
-	            return nestedComments;
-	        }
-	    }, {
-	        key: 'renderNestedComments',
-	        value: function renderNestedComments(nestedComments) {
-	            var _this2 = this;
-
-	            return _react2.default.createElement(
-	                'ul',
-	                { className: 'comments' },
-	                Object.keys(nestedComments).map(function (commentId) {
-	                    var comment = nestedComments[commentId].comment;
-	                    return _react2.default.createElement(
-	                        'li',
-	                        { key: commentId, className: 'comment card' },
-	                        comment.id ? _react2.default.createElement(
-	                            'div',
-	                            { className: 'card-block' },
-	                            _react2.default.createElement(
-	                                _content2.default,
-	                                null,
-	                                comment.content.rendered
-	                            ),
-	                            _react2.default.createElement(
-	                                'i',
-	                                null,
-	                                comment.author_name
-	                            )
-	                        ) : '',
-	                        _this2.renderNestedComments(nestedComments[commentId].children)
-	                    );
-	                })
-	            );
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            if (this.props.comments.length) {
-	                var nestedComments = this.nestComments(this.props.comments);
-	                return this.renderNestedComments(nestedComments[0].children);
-	            }
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'comments' },
-	                'No Comments'
-	            );
-	        }
-	    }]);
-
-	    return Comments;
-	}(_react.Component);
-
-	function mapStateToProps(_ref) {
-	    var comments = _ref.comments;
-
-	    return { comments: comments };
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchComments: _actions.fetchComments })(Comments);
-
-/***/ },
+/* 319 */,
 /* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35163,6 +35016,328 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 342 */,
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _actions = __webpack_require__(271);
+
+	var _comment = __webpack_require__(345);
+
+	var _comment2 = _interopRequireDefault(_comment);
+
+	var _commentForm = __webpack_require__(346);
+
+	var _commentForm2 = _interopRequireDefault(_commentForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Comments = function (_Component) {
+	    _inherits(Comments, _Component);
+
+	    function Comments() {
+	        _classCallCheck(this, Comments);
+
+	        return _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).apply(this, arguments));
+	    }
+
+	    _createClass(Comments, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.fetchComments(this.props.pId);
+	        }
+	    }, {
+	        key: 'nestComments',
+	        value: function nestComments(comments) {
+	            var nestedComments = {};
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	                for (var _iterator = comments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var comment = _step.value;
+
+	                    if (comment.id in nestedComments) {
+	                        nestedComments[comment.id].comment = comment;
+	                    } else {
+	                        nestedComments[comment.id] = { comment: comment, children: {} };
+	                    }
+
+	                    if (comment.parent in nestedComments) {
+	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
+	                        delete nestedComments[comment.id];
+	                    } else {
+	                        nestedComments[comment.parent] = { comment: {}, children: {} };
+	                        nestedComments[comment.parent].children[comment.id] = nestedComments[comment.id];
+	                        delete nestedComments[comment.id];
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+
+	            return nestedComments;
+	        }
+	    }, {
+	        key: 'renderNestedComments',
+	        value: function renderNestedComments(nestedComments) {
+	            var _this2 = this;
+
+	            return _react2.default.createElement(
+	                'ul',
+	                { className: 'comments' },
+	                Object.keys(nestedComments).map(function (commentId) {
+	                    var comment = nestedComments[commentId].comment;
+	                    return _react2.default.createElement(
+	                        'li',
+	                        { key: commentId, className: 'comment card' },
+	                        comment.id ? _react2.default.createElement(_comment2.default, { comment: comment }) : '',
+	                        _this2.renderNestedComments(nestedComments[commentId].children)
+	                    );
+	                })
+	            );
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var commentsRendered = '';
+	            if (this.props.comments.length) {
+	                var nestedComments = this.nestComments(this.props.comments);
+	                commentsRendered = this.renderNestedComments(nestedComments[0].children);
+	            } else {
+	                commentsRendered = _react2.default.createElement(
+	                    'div',
+	                    { className: 'comments' },
+	                    'No Comments'
+	                );
+	            }
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                commentsRendered,
+	                _react2.default.createElement(_commentForm2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return Comments;
+	}(_react.Component);
+
+	function mapStateToProps(_ref) {
+	    var comments = _ref.comments;
+
+	    return { comments: comments };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchComments: _actions.fetchComments })(Comments);
+
+/***/ },
+/* 344 */,
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(216);
+
+	var _content = __webpack_require__(316);
+
+	var _content2 = _interopRequireDefault(_content);
+
+	var _commentForm = __webpack_require__(346);
+
+	var _commentForm2 = _interopRequireDefault(_commentForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Comment = function (_Component) {
+	    _inherits(Comment, _Component);
+
+	    function Comment() {
+	        _classCallCheck(this, Comment);
+
+	        var _this = _possibleConstructorReturn(this, (Comment.__proto__ || Object.getPrototypeOf(Comment)).call(this));
+
+	        _this.state = {
+	            active: false
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Comment, [{
+	        key: 'replyToComment',
+	        value: function replyToComment(e) {
+	            e.preventDefault();
+	            this.setState({ active: true });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'card-block' },
+	                _react2.default.createElement(
+	                    _content2.default,
+	                    null,
+	                    this.props.comment.content.rendered
+	                ),
+	                _react2.default.createElement(
+	                    'em',
+	                    null,
+	                    '- ',
+	                    this.props.comment.author_name
+	                ),
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    {
+	                        className: 'pull-right btn btn-sm',
+	                        to: '#comment-' + this.props.comment.id,
+	                        onClick: this.replyToComment.bind(this) },
+	                    'Reply'
+	                ),
+	                this.state.active && _react2.default.createElement(_commentForm2.default, { commentId: this.props.comment.id })
+	            );
+	        }
+	    }]);
+
+	    return Comment;
+	}(_react.Component);
+
+	exports.default = Comment;
+
+/***/ },
+/* 346 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(216);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CommentForm = function (_Component) {
+	    _inherits(CommentForm, _Component);
+
+	    function CommentForm() {
+	        _classCallCheck(this, CommentForm);
+
+	        return _possibleConstructorReturn(this, (CommentForm.__proto__ || Object.getPrototypeOf(CommentForm)).apply(this, arguments));
+	    }
+
+	    _createClass(CommentForm, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'form',
+	                { className: 'commentBox bg-faded' },
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    'Leave a comment'
+	                ),
+	                _react2.default.createElement('input', { type: 'hidden', name: 'commentId', value: this.props.commentId || 0 }),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'form-group' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        'Your name'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', className: 'form-control', 'aria-describedby': 'name',
+	                        placeholder: 'Your name', required: 'required', name: 'author_name' })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'form-group' },
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        'Email address*'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'email', className: 'form-control', 'aria-describedby': 'email',
+	                        placeholder: 'Enter email', required: 'required', name: 'author_email' })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'form-group' },
+	                    'Your thoughts*',
+	                    _react2.default.createElement('textarea', { className: 'form-control', id: 'exampleTextarea', rows: '3', name: 'content' })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CommentForm;
+	}(_react.Component);
+
+	exports.default = CommentForm;
 
 /***/ }
 /******/ ]);

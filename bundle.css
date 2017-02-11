@@ -24,6 +24,9 @@
   .card-columns {
     column-count: 4; } }
 
+.commentBox {
+  padding: 1em; }
+
 article.archive h1 {
   font-size: 2rem; }
 
