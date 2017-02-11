@@ -35,12 +35,12 @@ class Comments extends Component {
     renderNestedComments(nestedComments) {
         return <ul className="comments">{Object.keys(nestedComments).map(commentId => {
             const comment = nestedComments[commentId].comment;
-            return <li key={commentId} className="comment">
+            return <li key={commentId} className="comment card">
                 {(comment.id) ?
-                    <span>
-                    <Content>{comment.content.rendered}</Content>
-                    <i>{comment.author_name}</i>
-                    </span>
+                    <div className="card-block">
+                        <Content>{comment.content.rendered}</Content>
+                        <i>{comment.author_name}</i>
+                    </div>
                     : ''}
                 {this.renderNestedComments(nestedComments[commentId].children)}
             </li>

@@ -33319,10 +33319,10 @@
 	                    var comment = nestedComments[commentId].comment;
 	                    return _react2.default.createElement(
 	                        'li',
-	                        { key: commentId, className: 'comment' },
+	                        { key: commentId, className: 'comment card' },
 	                        comment.id ? _react2.default.createElement(
-	                            'span',
-	                            null,
+	                            'div',
+	                            { className: 'card-block' },
 	                            _react2.default.createElement(
 	                                _content2.default,
 	                                null,
