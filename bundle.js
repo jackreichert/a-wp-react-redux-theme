@@ -33308,18 +33308,21 @@
 	            return nestedComments;
 	        }
 	    }, {
-	        key: 'renderComments',
-	        value: function renderComments(comments) {
+	        key: 'renderNestedComments',
+	        value: function renderNestedComments(nestedComments) {
 	            var _this2 = this;
 
-	            if (Array.isArray(comments)) {
-	                return _react2.default.createElement(
-	                    'ul',
-	                    { className: 'comments' },
-	                    comments.map(function (comment) {
-	                        return _react2.default.createElement(
-	                            'li',
-	                            { key: comment.id, className: 'comment' },
+	            return _react2.default.createElement(
+	                'ul',
+	                { className: 'comments' },
+	                Object.keys(nestedComments).map(function (commentId) {
+	                    var comment = nestedComments[commentId].comment;
+	                    return _react2.default.createElement(
+	                        'li',
+	                        { key: commentId, className: 'comment' },
+	                        comment.id ? _react2.default.createElement(
+	                            'span',
+	                            null,
 	                            _react2.default.createElement(
 	                                _content2.default,
 	                                null,
@@ -33329,24 +33332,19 @@
 	                                'i',
 	                                null,
 	                                comment.author_name
-	                            ),
-	                            _this2.renderComments(comments.children)
-	                        );
-	                    })
-	                );
-	            }
+	                            )
+	                        ) : '',
+	                        _this2.renderNestedComments(nestedComments[commentId].children)
+	                    );
+	                })
+	            );
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            if (this.props.comments.length) {
 	                var nestedComments = this.nestComments(this.props.comments);
-	                console.log("nestedComments", nestedComments);
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'comments' },
-	                    this.renderComments(this.props.comments)
-	                );
+	                return this.renderNestedComments(nestedComments[0].children);
 	            }
 	            return _react2.default.createElement(
 	                'div',

@@ -32,23 +32,25 @@ class Comments extends Component {
         return nestedComments;
     }
 
-    renderComments(comments) {
-        if (Array.isArray(comments)) {
-            return <ul className="comments">{comments.map(comment => {
-                return <li key={comment.id} className="comment">
+    renderNestedComments(nestedComments) {
+        return <ul className="comments">{Object.keys(nestedComments).map(commentId => {
+            const comment = nestedComments[commentId].comment;
+            return <li key={commentId} className="comment">
+                {(comment.id) ?
+                    <span>
                     <Content>{comment.content.rendered}</Content>
                     <i>{comment.author_name}</i>
-                    {this.renderComments(comments.children)}
-                </li>;
-            })}</ul>
-        }
+                    </span>
+                    : ''}
+                {this.renderNestedComments(nestedComments[commentId].children)}
+            </li>
+        })}</ul>;
     }
 
     render() {
         if (this.props.comments.length) {
             const nestedComments = this.nestComments(this.props.comments);
-            console.log("nestedComments", nestedComments);
-            return <div className="comments">{this.renderComments(this.props.comments)}</div>
+            return this.renderNestedComments(nestedComments[0].children);
         }
         return <div className="comments">No Comments</div>
     }
