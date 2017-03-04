@@ -19,6 +19,7 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 			$this->remove_junk();
 			add_theme_support( 'post-thumbnails' );
 			add_action( 'widgets_init', [ $this, 'widgets_init' ] );
+			add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 		}
 
 		private function remove_junk() {
@@ -56,6 +57,7 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 				'after_title'   => '</h2>',
 			) );
 		}
+
 	}
 
 endif;

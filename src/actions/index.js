@@ -7,14 +7,15 @@ export const CATEGORY_POSTS = 'CATEGORY_POSTS';
 export const FETCH_TAX_INFO = 'FETCH_TAX_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
+export const CREATE_COMMENT = 'CREATE_COMMENT';
 
-const WP_API_ENDPOINT = `${RT_API.root}wp/v2/`;
+const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
 export function fetchPosts(pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&page=${pageNum}`)
+        axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&page=${pageNum}`)
             .then(response => {
                 dispatch({
                     type: FETCH_POSTS,
@@ -26,7 +27,7 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`)
+        axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`)
             .then(response => {
                 dispatch({
                     type: CATEGORY_POSTS,
@@ -38,7 +39,7 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
 
 export function getTaxIdFromSlug(tax, slug) {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${tax}?slug=${slug}`)
+        axios.get(`${WP_API_ENDPOINT}/${tax}?slug=${slug}`)
             .then(response => {
                 dispatch({
                     type: FETCH_TAX_INFO,
@@ -62,7 +63,7 @@ export function fetchPost(prettyPermalink) {
 
 export function fetchTaxInfo(tax, tagIds) {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${tax}/?include=${tagIds}`)
+        axios.get(`${WP_API_ENDPOINT}/${tax}/?include=${tagIds}`)
             .then(response => {
                 dispatch({
                     type: FETCH_TAX_INFO,
@@ -86,7 +87,7 @@ export function fetchMenu(menu) {
 
 export function searchSite(term, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}${post_type}?_embed&search=${term}`)
+        axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&search=${term}`)
             .then(response => {
                 dispatch({
                     type: SEARCH_POSTS,
@@ -98,7 +99,7 @@ export function searchSite(term, post_type = 'posts') {
 
 export function fetchComments(postId) {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}comments?post=${postId}&orderby=parent`)
+        axios.get(`${WP_API_ENDPOINT}/comments?post=${postId}&orderby=parent&per_page=100`)
             .then(response => {
                 dispatch({
                     type: FETCH_COMMENTS,
@@ -108,3 +109,19 @@ export function fetchComments(postId) {
     }
 }
 
+export function createComment(params = {post: 0, parent: 0, author_name: '', author_email: '', content: ''}) {
+    return function (dispatch) {
+        axios({
+            method: 'post',
+            url: `${WP_API_ENDPOINT}/comments`,
+            headers: {'X-WP-Nonce': RT_API.nonce},
+            data: params
+        })
+            .then(response => {
+                dispatch({
+                    type: CREATE_COMMENT,
+                    payload: response.data
+                });
+            });
+    }
+}
