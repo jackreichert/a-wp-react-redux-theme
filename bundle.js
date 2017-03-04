@@ -33079,7 +33079,7 @@
 	                        this.props.content
 	                    )
 	                ),
-	                _react2.default.createElement(_postFooter2.default, { pId: this.props.pId, isSingle: this.props.isSingle, tags: this.props.tags, commentStatus: this.props.commentStatus })
+	                _react2.default.createElement(_postFooter2.default, { type: this.props.type, pId: this.props.pId, isSingle: this.props.isSingle, tags: this.props.tags, commentStatus: this.props.commentStatus })
 	            );
 	        }
 	    }], [{
@@ -33388,9 +33388,14 @@
 	            );
 	        }
 	    }, {
+	        key: 'shouldShowFooter',
+	        value: function shouldShowFooter() {
+	            return this.props.isSingle && this.props.tags.length > 0 && this.props.commentStatus !== 'closed';
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return this.props.isSingle ? _react2.default.createElement(
+	            return this.shouldShowFooter() ? _react2.default.createElement(
 	                'footer',
 	                { className: 'card-footer' },
 	                this.props.tags.length > 0 && this.renderTags(),

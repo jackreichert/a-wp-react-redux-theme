@@ -42,7 +42,7 @@ export default class Article extends Component {
                         {this.props.content}
                     </Content>
                 </div>
-                <PostFooter pId={this.props.pId} isSingle={this.props.isSingle} tags={this.props.tags} commentStatus={this.props.commentStatus} />
+                <PostFooter type={this.props.type} pId={this.props.pId} isSingle={this.props.isSingle} tags={this.props.tags} commentStatus={this.props.commentStatus} />
             </article>
         );
     }
