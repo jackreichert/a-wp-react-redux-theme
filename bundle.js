@@ -33933,7 +33933,13 @@
 	                    '\xA9 ',
 	                    this.getYear(),
 	                    ' ',
-	                    RT_API.siteName
+	                    RT_API.siteName,
+	                    ' | Powered by: ',
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: 'https://github.com/jackreichert/a-wp-react-redux-theme' },
+	                        'A React+Redux WordPress theme'
+	                    )
 	                )
 	            );
 	        }
