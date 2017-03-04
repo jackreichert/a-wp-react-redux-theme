@@ -16,9 +16,9 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 - Category archive pages
 - Tags
 - Bootstrap 4
+- Threaded comments
 
 ## To Do
-- Comments
 - Widgets
 - Static home page
 - Analytics reporting
