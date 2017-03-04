@@ -31,7 +31,7 @@ class PostFooter extends Component {
     }
 
     shouldShowFooter() {
-        return this.props.isSingle && this.props.tags.length > 0 && this.props.commentStatus !== 'closed';
+        return this.props.isSingle && (this.props.tags.length > 0 || this.props.commentStatus !== 'closed');
     }
 
     render() {
