@@ -22,22 +22,20 @@ class PostFooter extends Component {
     }
 
     renderTags() {
-        return this.props.tags.length ?
-            <div className="tags nav">
-                <span className="nav-link disabled">Tags:</span>
-                {this.props.tax.map(tag => {
-                    return <Link className="nav-link" to={`/tag/${tag.name}`} key={tag.id}>{tag.name}</Link>
-                })}
-            </div>
-            : <span/>;
+        return <div className="tags nav">
+            <span className="nav-link disabled">Tags:</span>
+            {this.props.tax.map(tag => {
+                return <Link className="nav-link" to={`/tag/${tag.name}`} key={tag.id}>{tag.name}</Link>
+            })}
+        </div>;
     }
 
     render() {
         return this.props.isSingle ?
             <footer className="card-footer">
-                {this.renderTags()}
+                {this.props.tags.length > 0 && this.renderTags()}
                 <hr/>
-                <Comments pId={this.props.pId}/>
+                {this.props.commentStatus !== 'closed' && <Comments pId={this.props.pId}/>}
             </footer> :
             <footer />;
     }

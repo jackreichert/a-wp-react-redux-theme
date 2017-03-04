@@ -30837,6 +30837,7 @@
 	                    isSingle: _this2.isSingle(),
 	                    featuredImage: post.featured_image_url,
 	                    categories: _this2.getCategories(post.categories),
+	                    commentStatus: post.comment_status,
 	                    tags: post.tags || [] });
 	            });
 	        }
@@ -33078,7 +33079,7 @@
 	                        this.props.content
 	                    )
 	                ),
-	                _react2.default.createElement(_postFooter2.default, { pId: this.props.pId, isSingle: this.props.isSingle, tags: this.props.tags })
+	                _react2.default.createElement(_postFooter2.default, { pId: this.props.pId, isSingle: this.props.isSingle, tags: this.props.tags, commentStatus: this.props.commentStatus })
 	            );
 	        }
 	    }], [{
@@ -33369,7 +33370,7 @@
 	    }, {
 	        key: 'renderTags',
 	        value: function renderTags() {
-	            return this.props.tags.length ? _react2.default.createElement(
+	            return _react2.default.createElement(
 	                'div',
 	                { className: 'tags nav' },
 	                _react2.default.createElement(
@@ -33384,7 +33385,7 @@
 	                        tag.name
 	                    );
 	                })
-	            ) : _react2.default.createElement('span', null);
+	            );
 	        }
 	    }, {
 	        key: 'render',
@@ -33392,9 +33393,9 @@
 	            return this.props.isSingle ? _react2.default.createElement(
 	                'footer',
 	                { className: 'card-footer' },
-	                this.renderTags(),
+	                this.props.tags.length > 0 && this.renderTags(),
 	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(_comments2.default, { pId: this.props.pId })
+	                this.props.commentStatus !== 'closed' && _react2.default.createElement(_comments2.default, { pId: this.props.pId })
 	            ) : _react2.default.createElement('footer', null);
 	        }
 	    }]);

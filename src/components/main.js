@@ -40,6 +40,7 @@ export default class Main extends Component {
                             isSingle={this.isSingle()}
                             featuredImage={post.featured_image_url}
                             categories={this.getCategories(post.categories)}
+                            commentStatus={post.comment_status}
                             tags={post.tags || []}/>;
         });
     }
