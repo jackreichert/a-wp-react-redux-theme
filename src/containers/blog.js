@@ -22,6 +22,10 @@ class Blog extends Component {
         }
     }
 
+    componentDidUpdate(){
+        document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
+    }
+
     render() {
         return (
             <section className="container-fluid">

@@ -28809,6 +28809,11 @@
 	            }
 	        }
 	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            document.title = RT_API.siteName + ' - ' + RT_API.siteDescription;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
