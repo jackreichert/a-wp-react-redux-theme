@@ -11,12 +11,12 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 		}
 
 		function init() {
-			add_action( 'wp_enqueue_scripts', [ $this, 'bootstrap' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'theme' ] );
+			add_action( 'wp_enqueue_scripts', [ $this, 'bootstrap' ], 5 );
+			add_action( 'wp_enqueue_scripts', [ $this, 'theme' ], 20 );
 		}
 
 		function bootstrap() {
-			wp_enqueue_style( 'bootstrap4-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css', [], '3.3.7' );
+			wp_enqueue_style( 'bootstrap4-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css', [], '4a6' );
 		}
 
 		function theme() {
@@ -25,6 +25,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'root'       => esc_url_raw( rest_url() ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'siteName'   => get_bloginfo( 'name' ),
+				'siteDescription'   => get_bloginfo( 'description' ),
 				'categories' => get_categories( [ 'hide_empty' => 0 ] ),
 				'current_user' => wp_get_current_user()
 			) );
