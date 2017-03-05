@@ -22,6 +22,10 @@ class Single extends Component {
         }
     }
 
+    componentDidUpdate(){
+        document.title = `${this.props.posts[0].title.rendered} - ${RT_API.siteName}`;
+    }
+
     render() {
         return (
             <section className="container-fluid">

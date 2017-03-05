@@ -22,6 +22,10 @@ class Category extends Component {
         }
     }
 
+    componentDidUpdate(){
+        document.title = `${this.props.tax[0].name} - ${RT_API.siteName}`;
+    }
+
     render() {
         return (
             <section className="container-fluid">

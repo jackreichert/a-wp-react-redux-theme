@@ -22,6 +22,10 @@ class Search extends Component {
         }
     }
 
+    componentDidUpdate(){
+        document.title = `Search Results - ${RT_API.siteName}`;
+    }
+
     render() {
         return (
             <section className="container-fluid">

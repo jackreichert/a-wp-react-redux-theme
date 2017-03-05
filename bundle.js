@@ -34024,6 +34024,11 @@
 	            }
 	        }
 	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            document.title = 'Search Results - ' + RT_API.siteName;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -34114,6 +34119,11 @@
 	            if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax) || nextProps.params.pageNum !== this.props.params.pageNum) {
 	                this.props.fetchPostsFromTax('categories', nextProps.tax[0].id, nextProps.params.pageNum);
 	            }
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            document.title = this.props.tax[0].name + ' - ' + RT_API.siteName;
 	        }
 	    }, {
 	        key: 'render',
@@ -34207,6 +34217,11 @@
 	            if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
 	                this.props.fetchPostsFromTax('tags', nextProps.tax[0].id, nextProps.params.pageNum);
 	            }
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            document.title = this.props.tax[0].name + ' - ' + RT_API.siteName;
 	        }
 	    }, {
 	        key: 'render',
@@ -34303,6 +34318,11 @@
 	            if (props.params.splat !== this.props.params.splat || willMount) {
 	                this.props.fetchPost(props.params.splat);
 	            }
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            document.title = this.props.posts[0].title.rendered + ' - ' + RT_API.siteName;
 	        }
 	    }, {
 	        key: 'render',
