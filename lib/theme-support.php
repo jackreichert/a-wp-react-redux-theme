@@ -18,8 +18,8 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 		private function hooks() {
 			$this->remove_junk();
 			add_theme_support( 'post-thumbnails' );
-			add_action( 'widgets_init', [ $this, 'widgets_init' ] );
 			add_filter( 'rest_allow_anonymous_comments', '__return_true' );
+			add_action( 'after_setup_theme', [ $this, 'title_tag' ] );
 		}
 
 		private function remove_junk() {
@@ -47,15 +47,9 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 			) );
 		}
 
-		function widgets_init() {
-			register_sidebar( array(
-				'name'          => 'Main Sidebar',
-				'id'            => 'main_sidebar',
-				'before_widget' => '<div>',
-				'after_widget'  => '</div>',
-				'before_title'  => '<h2 class="rounded">',
-				'after_title'   => '</h2>',
-			) );
+
+		public function title_tag() {
+			add_theme_support( 'title-tag' );
 		}
 
 	}
