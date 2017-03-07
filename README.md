@@ -1,6 +1,9 @@
 # A React+Redux WordPress theme
 WordPress theme built with react calling WP-API for content.
 
+## Live Demo
+[Check out my blog!](http://www.jackreichert.com/)
+
 ## Why?
 I wanted to play with the shiny new WP-REST-API, explore es6 and transpiling, and finally work on a full project using React+Redux.
 I wrote a bit about the journey [on my blog](https://www.jackreichert.com/2017/01/developing-a-theme-for-wordpress-using-reactjs-redux-and-the-wp-rest-api/).
