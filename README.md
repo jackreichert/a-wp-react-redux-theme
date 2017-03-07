@@ -20,7 +20,7 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 - Tags
 - Bootstrap 4
 - Threaded comments
-- Dynamic Head 
+- Dynamic Head title tag
 
 ## To Do
 - Widgets
