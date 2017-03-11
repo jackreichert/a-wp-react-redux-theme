@@ -7,12 +7,18 @@ export default class Meta extends Component {
             return this.props.categories.map((cat, i) => {
                 if (1 == this.props.categories.length || cat.slug !== 'uncategorized') {
                     return (<span key={cat.term_id}>
-                        <Link to={`/category/${cat.slug}`} className="cat-links">{cat.name}</Link>
+                        <Link to={this.getCategoryPath(cat.link)} className="cat-links">{cat.name}</Link>
                         {(1 < this.props.categories.length && i < (this.props.categories.length - 1)) ? ', ' : ''}
                         </span>);
                 }
             });
         }
+    }
+
+    getCategoryPath(link) {
+        var el = document.createElement('a');
+        el.href = link;
+        return el.pathname;
     }
 
     renderDates() {

@@ -28733,10 +28733,12 @@
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _blog2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'page/:pageNum', component: _blog2.default, addHandlerKey: true }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'search/:term', component: _search2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug', component: _category2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug/:pageNum', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug/', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:parent/:slug/', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:slug/:pageNum(\\\\d+)', component: _category2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'category/:parent/:slug/:pageNum(\\\\d+)', component: _category2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'tag/:slug', component: _tag2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'tag/:slug/:pageNum', component: _tag2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'tag/:slug/:pageNum(\\\\d+)', component: _tag2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '*', component: _single2.default })
 	);
 
@@ -30529,13 +30531,6 @@
 	            return _react2.default.createElement(
 	                'header',
 	                { className: 'navbar navbar-toggleable-sm navbar-light bg-faded' },
-	                _react2.default.createElement(
-	                    'button',
-	                    { className: 'navbar-toggler navbar-toggler-right', type: 'button', 'data-toggle': 'collapse',
-	                        'data-target': '#navbarSupportedContent', 'aria-controls': 'navbarSupportedContent',
-	                        'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
-	                    _react2.default.createElement('span', { className: 'navbar-toggler-icon' })
-	                ),
 	                _react2.default.createElement(
 	                    'h1',
 	                    { className: 'navbar-brand' },
@@ -33264,7 +33259,7 @@
 	                            { key: cat.term_id },
 	                            _react2.default.createElement(
 	                                _reactRouter.Link,
-	                                { to: '/category/' + cat.slug, className: 'cat-links' },
+	                                { to: _this2.getCategoryPath(cat.link), className: 'cat-links' },
 	                                cat.name
 	                            ),
 	                            1 < _this2.props.categories.length && i < _this2.props.categories.length - 1 ? ', ' : ''
@@ -33272,6 +33267,13 @@
 	                    }
 	                });
 	            }
+	        }
+	    }, {
+	        key: 'getCategoryPath',
+	        value: function getCategoryPath(link) {
+	            var el = document.createElement('a');
+	            el.href = link;
+	            return el.pathname;
 	        }
 	    }, {
 	        key: 'renderDates',
@@ -34107,6 +34109,7 @@
 	    _createClass(Category, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
+	            console.log("SLUG", this.props.params.slug);
 	            this.props.getTaxIdFromSlug('categories', this.props.params.slug);
 	        }
 	    }, {

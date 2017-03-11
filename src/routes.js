@@ -12,10 +12,12 @@ export default (
         <IndexRoute component={Blog}/>
         <Route path="page/:pageNum" component={Blog} addHandlerKey={true}/>
         <Route path="search/:term" component={Search}/>
-        <Route path="category/:slug" component={Category}/>
-        <Route path="category/:slug/:pageNum" component={Category}/>
+        <Route path="category/:slug/" component={Category}/>
+        <Route path="category/:parent/:slug/" component={Category}/>
+        <Route path="category/:slug/:pageNum(\\d+)" component={Category}/>
+        <Route path="category/:parent/:slug/:pageNum(\\d+)" component={Category}/>
         <Route path="tag/:slug" component={Tag}/>
-        <Route path="tag/:slug/:pageNum" component={Tag}/>
+        <Route path="tag/:slug/:pageNum(\\d+)" component={Tag}/>
         <Route path="*" component={Single}/>
     </Route>
 );
