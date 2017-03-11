@@ -34109,7 +34109,6 @@
 	    _createClass(Category, [{
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
-	            console.log("SLUG", this.props.params.slug);
 	            this.props.getTaxIdFromSlug('categories', this.props.params.slug);
 	        }
 	    }, {

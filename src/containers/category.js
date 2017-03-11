@@ -9,7 +9,6 @@ import Footer from '../components/footer';
 
 class Category extends Component {
     componentWillMount() {
-        console.log("SLUG",this.props.params.slug);
         this.props.getTaxIdFromSlug('categories', this.props.params.slug);
     }
 
