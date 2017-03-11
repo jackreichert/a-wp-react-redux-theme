@@ -17,10 +17,12 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 - "Template pages" equivalence for [index.php, single.php, search.php, category.php](https://github.com/jackreichert/a-wp-react-redux-theme/tree/master/src/containers)... but in React/Redux
 - Search
 - Category archive pages
+- First level sub-categories
 - Tags
 - Bootstrap 4
 - Threaded comments
 - Dynamic Head title tag
+
 
 ## To Do
 - Widgets
