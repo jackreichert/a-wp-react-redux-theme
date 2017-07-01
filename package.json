@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPLv2",
   "dependencies": {
     "axios": "^0.15.3",
     "babel-core": "^6.21",
