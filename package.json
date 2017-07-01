@@ -13,6 +13,7 @@
     "axios": "^0.15.3",
     "babel-core": "^6.21",
     "babel-loader": "^6.2",
+    "babel-polyfill": "^6.23",
     "babel-preset-es2015": "^6.18",
     "babel-preset-react": "^6.16",
     "babel-preset-stage-2": "^6.18",
