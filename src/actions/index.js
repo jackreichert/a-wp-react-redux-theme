@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { config } from '../config';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
@@ -9,9 +10,9 @@ export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 
-const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
-const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
-const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
+const WP_API_ENDPOINT = config.endpoints['wp-api'];
+const PRETTYPERMALINK_ENDPOINT = config.endpoints['prettypermalink'];
+const MENU_ENDPOINT = config.endpoints['menu'];
 
 export function fetchPosts(pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
