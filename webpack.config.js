@@ -33,7 +33,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin("bundle.css", {allChunks: true})
+        new ExtractTextPlugin("../style.css", {allChunks: true})
     ],
     postcss: [autoPrefixer({browsers: ['last 3 versions']})]
 };
