@@ -10,12 +10,13 @@
     "clean": "npm run clean:build && npm run clean:dist",
     "clean:build": "shx rm -rf build/* && mkdir -f build",
     "clean:dist": "shx rm -rf dist",
-    "assets": "npm run css && npm run php",
+    "assets": "npm run css && npm run php && npm run screenshot",
     "css": "npm run css:vendor && npm run css:custom && npm run css:compress",
     "css:vendor": "concat -o build/vendor.css node_modules/bootstrap/dist/css/bootstrap.css",
     "css:custom": "shx cp assets/style/style.css build/style.css",
     "css:compress": "shx mkdir -p dist/css && uglifycss --output dist/css/vendor.min.css build/vendor.css && uglifycss --output dist/css/style.min.css build/style.css",
-    "php": "shx cp -R assets/php/* dist"
+    "php": "shx cp -R assets/php/* dist",
+    "screenshot": "shx cp screenshot.png dist"
   },
   "keywords": [],
   "author": "",
