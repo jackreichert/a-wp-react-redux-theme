@@ -34,6 +34,16 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 ## What does it look like?
 ![it looks like this](screenshot.png)
 
+## How to use it
+Once cloned the repository, you can install the dependencies by running
+```
+npm install
+```
+To build the package
+```
+npm run build
+```
+
 ## Want to help out?
 Or do you just want to use it yourself? Be my guest. 
 I'd love to see it out in the wild, so please share how you're using it. 

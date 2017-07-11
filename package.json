@@ -4,7 +4,12 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean:build": "shx rm -rf build/*",
+    "clean:dist": "shx rm -rf dist",
+    "clean": "npm run clean:build && npm run clean:dist",
+    "dist:init": "npm run clean:dist",
+    "build": "npm run dist:init && webpack --progress --profile --colors --display-error-details"
   },
   "keywords": [],
   "author": "",
@@ -33,5 +38,8 @@
     "sass-loader": "^4.1",
     "style-loader": "^0.13",
     "webpack": "^1.14"
+  },
+  "devDependencies": {
+    "shx": "^0.2.2"
   }
 }
