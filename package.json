@@ -5,11 +5,17 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean:build": "shx rm -rf build/*",
-    "clean:dist": "shx rm -rf dist",
+    "build": "npm run init && webpack --progress --profile --colors --display-error-details && npm run assets",
+
+    "init": "npm run clean:dist",
     "clean": "npm run clean:build && npm run clean:dist",
-    "dist:init": "npm run clean:dist",
-    "build": "npm run dist:init && webpack --progress --profile --colors --display-error-details"
+    "clean:build": "shx rm -rf build/* && mkdir -f build",
+    "clean:dist": "shx rm -rf dist",
+    "assets": "npm run css && npm run php",
+    "css": "npm run css:vendor && npm run css:custom",
+    "css:vendor": "concat -o build/vendor.css node_modules/bootstrap/dist/css/bootstrap.css",
+    "css:custom": "shx cp assets/style/style.css build/style.css",
+    "php": "shx cp assets/php/*.php build"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +46,8 @@
     "webpack": "^1.14"
   },
   "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "concat": "^1.0.3",
     "shx": "^0.2.2"
   }
 }
