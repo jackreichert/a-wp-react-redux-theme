@@ -5,17 +5,17 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run init && webpack --progress --profile --colors --display-error-details && npm run assets",
-
-    "init": "npm run clean:dist",
+    "build": "npm run dist:init && webpack --progress --profile --colors --display-error-details && npm run assets",
+    "dist:init": "npm run clean:dist shx mkdir -p dist/css && shx mkdir -p dist/fonts && shx mkdir -p dist/js && shx mkdir -p dist/img",
     "clean": "npm run clean:build && npm run clean:dist",
     "clean:build": "shx rm -rf build/* && mkdir -f build",
     "clean:dist": "shx rm -rf dist",
     "assets": "npm run css && npm run php",
-    "css": "npm run css:vendor && npm run css:custom",
+    "css": "npm run css:vendor && npm run css:custom && npm run css:compress",
     "css:vendor": "concat -o build/vendor.css node_modules/bootstrap/dist/css/bootstrap.css",
     "css:custom": "shx cp assets/style/style.css build/style.css",
-    "php": "shx cp assets/php/*.php build"
+    "css:compress": "shx mkdir -p dist/css && uglifycss --output dist/css/vendor.min.css build/vendor.css && uglifycss --output dist/css/style.min.css build/style.css",
+    "php": "shx cp -R assets/php/* dist"
   },
   "keywords": [],
   "author": "",
@@ -48,6 +48,7 @@
   "devDependencies": {
     "bootstrap": "^3.3.7",
     "concat": "^1.0.3",
-    "shx": "^0.2.2"
+    "shx": "^0.2.2",
+    "uglifycss": "0.0.27"
   }
 }
