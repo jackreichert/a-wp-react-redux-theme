@@ -1,14 +1,23 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const autoPrefixer = require('autoprefixer');
+const path = require('path');
 
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: __dirname,
+        path: path.resolve('dist') + '/js',
         filename: 'bundle.js'
     },
     module: {
         loaders: [
+            {
+                test: /\.js?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015', 'stage-2', 'react']
+                }
+            },
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
@@ -24,7 +33,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin("bundle.css", {allChunks: true})
+        new ExtractTextPlugin("../style.css", {allChunks: true})
     ],
     postcss: [autoPrefixer({browsers: ['last 3 versions']})]
 };

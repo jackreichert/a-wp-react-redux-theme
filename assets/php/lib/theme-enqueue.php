@@ -20,7 +20,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 		}
 
 		function theme() {
-			wp_enqueue_script( 'ReactTheme-js', get_template_directory_uri() . '/bundle.js', [ 'jquery' ], date( 'YmdHis' ), true );
+			wp_enqueue_script( 'ReactTheme-js', get_template_directory_uri() . '/js/bundle.js', [ 'jquery' ], date( 'YmdHis' ), true );
 			wp_localize_script( 'ReactTheme-js', 'RT_API', array(
 				'root'            => esc_url_raw( rest_url() ),
 				'nonce'           => wp_create_nonce( 'wp_rest' ),
@@ -29,7 +29,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'categories'      => $this->get_categories_with_links(),
 				'current_user'    => wp_get_current_user()
 			) );
-			wp_enqueue_style( get_stylesheet(), get_template_directory_uri() . '/bundle.css' );
+			wp_enqueue_style( get_stylesheet(), get_template_directory_uri() . '/js/bundle.css' );
 		}
 
 		function get_categories_with_links() {
