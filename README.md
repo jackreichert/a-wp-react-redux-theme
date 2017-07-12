@@ -35,14 +35,18 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 ![it looks like this](screenshot.png)
 
 ## How to use it
-Once cloned the repository, you can install the dependencies by running
+Clone or download the code in this repository and install the depencencies
 ```
+cd a-wp-react-redux-theme/
 npm install
 ```
-To build the package
+
+Build the wordpress theme by running
 ```
 npm run build
 ```
+Rename the dir 'dist' to 'react-theme' and upload it into your wordpress theme directory.
+
 
 ## Want to help out?
 Or do you just want to use it yourself? Be my guest. 
