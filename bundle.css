@@ -3,6 +3,7 @@
 
 .fade-enter-active {
   opacity: 1.0;
+  -webkit-transition: 0.5s ease-in all;
   transition: 0.5s ease-in all; }
 
 .fade-leave {
@@ -10,19 +11,23 @@
 
 .fade-leave-active {
   opacity: 0;
+  -webkit-transition: .01s ease-in all;
   transition: .01s ease-in all; }
 
 @media (min-width: 576px) {
   .card-columns {
-    column-count: 2; } }
+    -webkit-column-count: 2;
+            column-count: 2; } }
 
 @media (min-width: 992px) {
   .card-columns {
-    column-count: 3; } }
+    -webkit-column-count: 3;
+            column-count: 3; } }
 
 @media (min-width: 1200px) {
   .card-columns {
-    column-count: 4; } }
+    -webkit-column-count: 4;
+            column-count: 4; } }
 
 .commentBox {
   padding: 1em; }

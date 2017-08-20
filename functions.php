@@ -1,17 +1,8 @@
 <?php
 
-spl_autoload_register( function ( $class ) {
-	$classname_pieces = explode( '_', strtolower( $class ) );
-	$class_file       = get_template_directory() . "/lib/" . implode( '-', $classname_pieces ) . ".php";
-	if ( file_exists( $class_file ) ) {
-		include_once  $class_file;
-	} else {
-		$class_file = get_template_directory() . "/lib/" . array_pop( $classname_pieces ) . "s/" . implode( '-', $classname_pieces ) . ".php";
-		if ( file_exists( $class_file ) ) {
-			include_once $class_file;
-		}
-	}
-} );
+include_once 'lib/theme-enqueue.php';
+include_once 'lib/theme-endpoints.php';
+include_once 'lib/theme-support.php';
 
 $Theme_Support = new Theme_Support();
 $Theme_Support->init();

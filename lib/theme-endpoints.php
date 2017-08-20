@@ -8,6 +8,10 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 
 	class Theme_Endpoints {
 		function __construct() {
+			include_once 'endpoints/add-featured-image.php';
+			include_once 'endpoints/add-formatted-date.php';
+			include_once 'endpoints/menus.php';
+			include_once 'endpoints/pretty-permalinks.php';
 		}
 
 		function init() {

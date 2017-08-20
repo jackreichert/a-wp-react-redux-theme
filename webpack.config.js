@@ -1,5 +1,4 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const autoPrefixer = require('autoprefixer');
 
 module.exports = {
     entry: './src/index.js',
@@ -8,7 +7,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
@@ -19,12 +18,30 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css!sass!postcss?sourceMap')
+                exclude: /(node_modules|bower_components)/,
+                use: ExtractTextPlugin.extract({
+                    use: [{
+                        loader: 'css-loader',
+                        options: {sourceMap: true}
+                    }, {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true,
+                            plugins: () => ([
+                                require('autoprefixer')({
+                                    browsers: ['last 2 versions', 'ie > 8'],
+                                }),
+                            ])
+                        }
+                    }, {
+                        loader: 'sass-loader',
+                        options: {sourceMap: true}
+                    }]
+                })
             }
         ]
     },
     plugins: [
         new ExtractTextPlugin("bundle.css", {allChunks: true})
-    ],
-    postcss: [autoPrefixer({browsers: ['last 3 versions']})]
+    ]
 };
