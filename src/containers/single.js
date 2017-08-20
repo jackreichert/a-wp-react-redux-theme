@@ -9,32 +9,28 @@ import Footer from '../components/footer';
 
 class Single extends Component {
     componentWillMount() {
-        this.getPosts(this.props, true);
+        this.props.fetchPost(this.props.location.pathname);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getPosts(nextProps);
-    }
-
-    getPosts(props, willMount = false) {
-        if (props.params.splat !== this.props.params.splat || willMount) {
-            this.props.fetchPost(props.params.splat);
+        if (this.props.location.pathname !== nextProps.location.pathname) {
+            this.props.fetchPost(nextProps.location.pathname);
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         document.title = `${this.props.posts[0].title.rendered} - ${RT_API.siteName}`;
     }
 
     render() {
         return (
             <section className="container-fluid">
-                <Header />
+                <Header/>
                 <Main posts={this.props.posts}
-                      pageNum={this.props.params.pageNum || 1}
-                      route={this.props.route.path}
-                      slug={this.props.params.slug || ''} />
-                <Footer />
+                      pageNum={1}
+                      route=""
+                      slug={this.props.match.params.slug || ''}/>
+                <Footer/>
             </section>
         );
     }

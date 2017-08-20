@@ -6,43 +6,51 @@ import Meta from './article/meta';
 import PostFooter from '../../containers/parts/postFooter';
 
 export default class Article extends Component {
-    static get defaultProps() {
-        return {
-            title: "Hello, world!",
-            content: "Welcome to WordPress. This is your first post. Edit or delete it, then start writing!"
-        }
-    }
-
-    getClasses(piece) {
+    getClasses() {
         return this.props.isSingle ? 'card single w-75' : 'card archive';
     }
 
     getFeaturedImageSrc() {
-        if (this.props.featuredImage) {
-            return this.props.isSingle ? this.props.featuredImage.large : this.props.featuredImage.full;
+        if (this.props.post.featured_image_url) {
+            return this.props.isSingle ? this.props.post.featured_image_url.large : this.props.post.featured_image_url.full;
         } else {
             return '';
         }
     }
 
+    getCategories(cat_ids) {
+        if ('undefined' !== typeof cat_ids) {
+            return cat_ids.map(cat_id => {
+                return RT_API['categories'].filter(cat => {
+                    return cat.term_id === cat_id
+                })[0];
+            });
+        }
+    }
+
+    getContent(post, isSingle) {
+        return (isSingle) ? post.content.rendered : post.excerpt.rendered;
+    }
+
     render() {
+        const post = this.props.post;
         return (
-            <article className={this.getClasses('article')}>
+            <article className={this.getClasses()}>
                 <img src={this.getFeaturedImageSrc()} className="card-img-top img-fluid"/>
                 <div className="card-block">
-                    <Title link={this.props.link} isSingle={this.props.isSingle}>
-                        {this.props.title}
+                    <Title link={post.link} isSingle={this.props.isSingle}>
+                        {post.title.rendered}
                     </Title>
-                    <Meta categories={this.props.categories}
-                          date={this.props.date}
-                          formattedDate={this.props.formattedDate}
-                          type={this.props.type}
-                          isSingle={this.props.isSingle} />
+                    <Meta categories={this.getCategories(post.categories)}
+                          date={post.date}
+                          formattedDate={post.formatted_date}
+                          type={post.type}
+                          isSingle={this.props.isSingle}/>
                     <Content isSingle={this.props.isSingle}>
-                        {this.props.content}
+                        {this.getContent(post, this.props.isSingle)}
                     </Content>
                 </div>
-                <PostFooter type={this.props.type} pId={this.props.pId} isSingle={this.props.isSingle} tags={this.props.tags} commentStatus={this.props.commentStatus} />
+                <PostFooter type={post.type} pId={post.id} isSingle={this.props.isSingle} tags={post.tags} commentStatus={post.comment_status} />
             </article>
         );
     }

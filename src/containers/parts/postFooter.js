@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 
 import {fetchTaxInfo} from '../../actions';
 
@@ -8,16 +8,14 @@ import Comments from '../comments/comments';
 
 class PostFooter extends Component {
     componentWillMount() {
-        this.getTagsInfo(this.props, true);
+        if ( this.props.tags.length) {
+            this.props.fetchTaxInfo('tags', this.props.tags);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getTagsInfo(nextProps);
-    }
-
-    getTagsInfo(props, willMount = false) {
-        if ((willMount || props.tags !== this.props.tags) && props.tags.length && props.isSingle) {
-            this.props.fetchTaxInfo('tags', props.tags);
+        if ((this.props.tags !== nextProps.tags) && nextProps.tags.length && this.props.isSingle) {
+            this.props.fetchTaxInfo('tags', nextProps.tags);
         }
     }
 
@@ -41,11 +39,12 @@ class PostFooter extends Component {
                 <hr/>
                 {this.props.commentStatus !== 'closed' && <Comments pId={this.props.pId}/>}
             </footer> :
-            <footer />;
+            <footer/>;
     }
 }
 
 function mapStateToProps({tax}) {
     return {tax};
 }
+
 export default connect(mapStateToProps, {fetchTaxInfo})(PostFooter);

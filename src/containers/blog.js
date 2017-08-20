@@ -17,24 +17,24 @@ class Blog extends Component {
     }
 
     getPosts(props, willMount = false) {
-        if (props.params.pageNum !== this.props.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
-            this.props.fetchPosts(props.params.pageNum || 1);
+        if (props.match.params.pageNum !== this.props.match.params.pageNum || willMount || this.props.location.pathname !== props.location.pathname) {
+            this.props.fetchPosts(props.match.params.pageNum || 1);
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
     }
 
     render() {
         return (
             <section className="container-fluid">
-                <Header />
+                <Header/>
                 <Main posts={this.props.posts}
-                      pageNum={this.props.params.pageNum || 1}
-                      route={this.props.route.path || ''}
-                      slug={this.props.params.slug || ''}/>
-                <Footer />
+                      pageNum={this.props.match.params.pageNum || 1}
+                      route={this.props.match.path || ''}
+                      slug={this.props.match.params.slug || ''}/>
+                <Footer/>
             </section>
         );
     }
