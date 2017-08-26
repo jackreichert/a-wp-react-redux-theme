@@ -24,7 +24,7 @@ class Single extends Component {
 
     render() {
         return (
-            <section className="container-fluid">
+            <section className="container-fluid template-single">
                 <Header/>
                 <Main />
                 <Footer/>

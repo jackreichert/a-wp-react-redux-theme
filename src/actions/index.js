@@ -4,7 +4,8 @@ export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
 export const CATEGORY_POSTS = 'CATEGORY_POSTS';
-export const FETCH_TAX_INFO = 'FETCH_TAX_INFO';
+export const FETCH_CAT_INFO = 'FETCH_CAT_INFO';
+export const FETCH_TAG_INFO = 'FETCH_TAG_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
@@ -43,10 +44,21 @@ export function getTaxIdFromSlug(tax, slug) {
     return function (dispatch) {
         axios.get(`${WP_API_ENDPOINT}/${tax}?slug=${slug}`)
             .then(response => {
-                dispatch({
-                    type: FETCH_TAX_INFO,
-                    payload: response.data
-                });
+                switch (tax) {
+                    case "tags":
+                        dispatch({
+                            type: FETCH_TAG_INFO,
+                            payload: response.data
+                        });
+                        break;
+                    case "categories":
+                        dispatch({
+                            type: FETCH_CAT_INFO,
+                            payload: response.data
+                        });
+                        break;
+                }
+
             });
     }
 }
@@ -68,7 +80,7 @@ export function fetchTaxInfo(tax, tagIds) {
         axios.get(`${WP_API_ENDPOINT}/${tax}/?include=${tagIds}`)
             .then(response => {
                 dispatch({
-                    type: FETCH_TAX_INFO,
+                    type: FETCH_TAG_INFO,
                     payload: response.data
                 });
             });

@@ -28,7 +28,7 @@ class Search extends Component {
 
     render() {
         return (
-            <section className="container-fluid">
+            <section className="container-fluid template-search">
                 <Header searchTerm={this.props.params.term} isSearch={true}/>
                 <Main/>
                 <Footer/>

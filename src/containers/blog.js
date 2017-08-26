@@ -33,7 +33,7 @@ class Blog extends Component {
 
     render() {
         return (
-            <section className="container-fluid">
+            <section className="container-fluid template-blog">
                 <Header/>
                 <Main/>
                 <Footer/>

@@ -50,7 +50,7 @@ export default class Article extends Component {
                         {this.getContent(post, this.props.isSingle)}
                     </Content>
                 </div>
-                <PostFooter type={post.type} pId={post.id} isSingle={this.props.isSingle} tags={post.tags} commentStatus={post.comment_status} />
+                <PostFooter type={post.type} pId={post.id} isSingle={this.props.isSingle} tagIds={post.tags} commentStatus={post.comment_status} />
             </article>
         );
     }

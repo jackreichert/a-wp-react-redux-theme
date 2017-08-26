@@ -22,8 +22,8 @@ class Category extends Component {
             this.props.getTaxIdFromSlug('categories', nextProps.match.params.slug);
         }
 
-        if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax) || nextProps.match.params.pageNum !== this.props.match.params.pageNum) {
-            this.props.fetchPostsFromTax('categories', nextProps.tax[0].id, nextProps.match.params.pageNum);
+        if (JSON.stringify(this.props.cat) !== JSON.stringify(nextProps.cat) || nextProps.match.params.pageNum !== this.props.match.params.pageNum) {
+            this.props.fetchPostsFromTax('categories', nextProps.cat[0].id, nextProps.match.params.pageNum);
         }
 
         this.props.dispatch({
@@ -33,14 +33,14 @@ class Category extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.tax.length) {
-            document.title = `${this.props.tax[0].name} - ${RT_API.siteName}`;
+        if (this.props.cat.length) {
+            document.title = `${this.props.cat[0].name} - ${RT_API.siteName}`;
         }
     }
 
     render() {
         return (
-            <section className="container-fluid">
+            <section className="container-fluid template-category">
                 <Header/>
                 <Main/>
                 <Footer/>
@@ -49,8 +49,8 @@ class Category extends Component {
     }
 }
 
-function mapStateToProps({tax}) {
-    return {tax};
+function mapStateToProps({cat}) {
+    return {cat};
 }
 
 function mapDispatchToProps(dispatch) {
