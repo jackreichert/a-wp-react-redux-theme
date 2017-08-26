@@ -8,6 +8,7 @@ export const FETCH_TAX_INFO = 'FETCH_TAX_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
+export const ROUTER = 'ROUTER';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
@@ -27,7 +28,8 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
     return function (dispatch) {
-        axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`)
+        const url = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
+        axios.get(url)
             .then(response => {
                 dispatch({
                     type: CATEGORY_POSTS,

@@ -9,12 +9,12 @@ import Footer from '../components/footer';
 
 class Category extends Component {
     componentWillMount() {
-        this.props.getTaxIdFromSlug('tags', this.props.params.slug);
+        this.props.getTaxIdFromSlug('tags', this.props.match.params.slug);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.params.slug !== nextProps.params.slug) {
-            this.props.getTaxIdFromSlug('tags', nextProps.params.slug);
+        if (this.props.match.params.slug !== nextProps.match.params.slug) {
+            this.props.getTaxIdFromSlug('tags', nextProps.match.params.slug);
         }
 
         if (JSON.stringify(this.props.tax) !== JSON.stringify(nextProps.tax)) {
@@ -22,26 +22,25 @@ class Category extends Component {
         }
     }
 
-    componentDidUpdate(){
-        document.title = `${this.props.tax[0].name} - ${RT_API.siteName}`;
+    componentDidUpdate() {
+        if (this.props.tax.length) {
+            document.title = `${this.props.tax[0].name} - ${RT_API.siteName}`;
+        }
     }
 
     render() {
         return (
             <section className="container-fluid">
-                <Header />
-                <Main posts={this.props.posts}
-                      pageNum={this.props.params.pageNum || 1}
-                      route={this.props.route.path}
-                      slug={this.props.params.slug || ''}/>
-                <Footer />
+                <Header/>
+                <Main/>
+                <Footer/>
             </section>
         );
     }
 }
 
-function mapStateToProps({posts, tax}) {
-    return {posts, tax};
+function mapStateToProps({tax}) {
+    return {tax};
 }
 
 export default connect(mapStateToProps, {fetchPostsFromTax, getTaxIdFromSlug})(Category)

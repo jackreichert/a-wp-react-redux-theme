@@ -19,6 +19,7 @@
     "babel-preset-es2015": "^6.24",
     "babel-preset-react": "^6.24",
     "babel-preset-stage-2": "^6.24",
+    "connected-react-router": "^4.2",
     "css-loader": "^0.28",
     "cssnano": "^3.10",
     "extract-text-webpack-plugin": "^3.0",

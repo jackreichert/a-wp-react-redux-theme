@@ -22,26 +22,19 @@ class Search extends Component {
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         document.title = `Search Results - ${RT_API.siteName}`;
     }
 
     render() {
         return (
             <section className="container-fluid">
-                <Header searchTerm={this.props.params.term} isSearch={true} />
-                <Main posts={this.props.posts}
-                      pageNum={this.props.params.pageNum || 1}
-                      route={this.props.route.path}
-                      slug={this.props.params.term || ''} />
-                <Footer />
+                <Header searchTerm={this.props.params.term} isSearch={true}/>
+                <Main/>
+                <Footer/>
             </section>
         );
     }
 }
 
-function mapStateToProps({posts}) {
-    return {posts};
-}
-
-export default connect(mapStateToProps, {searchSite})(Search)
+export default connect(null, {searchSite})(Search)

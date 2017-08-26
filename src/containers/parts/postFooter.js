@@ -8,7 +8,7 @@ import Comments from '../comments/comments';
 
 class PostFooter extends Component {
     componentWillMount() {
-        if ( this.props.tags.length) {
+        if (this.props.tags.length && this.props.isSingle) {
             this.props.fetchTaxInfo('tags', this.props.tags);
         }
     }

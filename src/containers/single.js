@@ -26,18 +26,11 @@ class Single extends Component {
         return (
             <section className="container-fluid">
                 <Header/>
-                <Main posts={this.props.posts}
-                      pageNum={1}
-                      route=""
-                      slug={this.props.match.params.slug || ''}/>
+                <Main />
                 <Footer/>
             </section>
         );
     }
 }
 
-function mapStateToProps({posts}) {
-    return {posts};
-}
-
-export default connect(mapStateToProps, {fetchPost})(Single)
+export default connect(null, {fetchPost})(Single)

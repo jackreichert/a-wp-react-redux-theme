@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import Article from './main/article';
-import PageNav from './main/pageNav';
+import PageNav from '../containers/parts/pageNav';
 
-export default class Main extends Component {
+class Main extends Component {
     componentWillUpdate() {
         window.scrollTo(0, 0);
     }
@@ -36,12 +37,15 @@ export default class Main extends Component {
                         {this.renderPosts(this.props.posts)}
                     </ReactCSSTransitionGroup>
                 </main>
-                {/*<PageNav pageNum={this.props.pageNum}*/}
-                {/*shouldRender={10 === this.props.posts.length}*/}
-                {/*slug={this.props.slug}*/}
-                {/*route={this.props.route}/>*/}
+                <PageNav shouldRender={10 === this.props.posts.length}/>
             </div>
         );
     }
 }
 
+
+function mapStateToProps({posts}) {
+    return {posts};
+}
+
+export default connect(mapStateToProps)(Main)
