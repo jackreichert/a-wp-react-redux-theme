@@ -9,7 +9,7 @@ class PageNav extends Component {
     }
 
     getSlug() {
-        if ('undefined' !== typeof this.props.routerMatch.params.slug && 'undefined' !== typeof this.props.routerMatch.url) {
+        if (('undefined' !== typeof this.props.routerMatch.params.slug || 'undefined' !== typeof this.props.routerMatch.params.term) && 'undefined' !== typeof this.props.routerMatch.url) {
             let tax = 'category';
             let urlParts = this.props.routerMatch.url.split('/');
             if (urlParts.length) {
@@ -20,7 +20,8 @@ class PageNav extends Component {
                     tax = urlParts[0];
                 }
             }
-            return `/${tax}/${this.props.routerMatch.params.slug}`;
+            let slug = this.props.routerMatch.params.slug || this.props.routerMatch.params.term;
+            return `/${tax}/${slug}`;
         } else {
             return "";
         }
