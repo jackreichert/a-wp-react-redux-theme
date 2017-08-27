@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import {connect, dispatch} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-import {searchSite} from '../actions/index';
+import {searchSite, ROUTER} from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
@@ -9,16 +10,20 @@ import Footer from '../components/footer';
 
 class Search extends Component {
     componentWillMount() {
-        this.getPosts(this.props, true);
+        this.props.searchSite(this.props.match.params.term);
+        this.props.dispatch({
+            type: ROUTER,
+            payload: this.props.match
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getPosts(nextProps);
-    }
-
-    getPosts(props, willMount = false) {
-        if (props.params.term !== this.props.params.term || willMount) {
-            this.props.searchSite(props.params.term);
+        if (this.props.match.params.term !== nextProps.match.params.term) {
+            this.props.searchSite(nextProps.match.params.term);
+            this.props.dispatch({
+                type: ROUTER,
+                payload: this.props.match
+            });
         }
     }
 
@@ -29,7 +34,7 @@ class Search extends Component {
     render() {
         return (
             <section className="container-fluid template-search">
-                <Header searchTerm={this.props.params.term} isSearch={true}/>
+                <Header searchTerm={this.props.match.params.term} isSearch={true}/>
                 <Main/>
                 <Footer/>
             </section>
@@ -37,4 +42,8 @@ class Search extends Component {
     }
 }
 
-export default connect(null, {searchSite})(Search)
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Object.assign({searchSite, dispatch}), dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(Search)

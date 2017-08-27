@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {browserHistory} from 'react-router';
+import {withRouter} from "react-router-dom";
 
-export default class Search extends Component {
+class Search extends Component {
     componentDidMount() {
         if ( this.props.isSearch) {
             this.searchInput.focus();
+            const tempValue = this.props.searchTerm;
+            this.searchInput.value = '';
+            this.searchInput.value = tempValue;
         }
     }
 
@@ -12,9 +15,9 @@ export default class Search extends Component {
         event.preventDefault();
         const searchTerm = event.target.value;
         if (0 < searchTerm.length) {
-            browserHistory.push(`/search/${searchTerm}`);
+            this.props.history.push(`/search/${searchTerm}`);
         } else {
-            browserHistory.push('/');
+            this.props.history.push('/');
         }
     }
 
@@ -35,3 +38,5 @@ export default class Search extends Component {
         );
     }
 }
+
+export default withRouter(Search);

@@ -33,9 +33,11 @@ class Category extends Component {
     }
 
     componentDidUpdate() {
+        let title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
         if (this.props.cat.length) {
-            document.title = `${this.props.cat[0].name} - ${RT_API.siteName}`;
+            document.title = title;
         }
+        document.title = title;
     }
 
     render() {

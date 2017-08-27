@@ -19,7 +19,7 @@ class Single extends Component {
     }
 
     componentDidUpdate() {
-        document.title = `${this.props.posts[0].title.rendered} - ${RT_API.siteName}`;
+        document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;;
     }
 
     render() {
@@ -33,4 +33,9 @@ class Single extends Component {
     }
 }
 
-export default connect(null, {fetchPost})(Single)
+
+function mapStateToProps({posts}) {
+    return {posts};
+}
+
+export default connect(mapStateToProps, {fetchPost})(Single)
