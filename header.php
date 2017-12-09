@@ -11,8 +11,7 @@
 </head>
 <body>
 <div id="react-main">
-    <section data-reactroot=""
-             class="container-fluid <?php Theme_Helpers::get_class( 'template-blog', 'template-single' ); ?>">
+    <section class="container-fluid <?php Theme_Helpers::get_class( 'template-blog', 'template-single' ); ?>">
         <header class="navbar navbar-expand-lg navbar-light bg-light"><h1 class="navbar-brand"><a
                         href="/"><?php bloginfo( 'name' ); ?></a></h1>
             <nav class="collapse navbar-collapse">
