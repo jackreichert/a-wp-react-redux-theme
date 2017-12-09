@@ -21,6 +21,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'root'            => esc_url_raw( rest_url() ),
 				'nonce'           => wp_create_nonce( 'wp_rest' ),
 				'siteName'        => get_bloginfo( 'name' ),
+				'baseUrl'         => get_bloginfo( 'url' ),
 				'siteDescription' => get_bloginfo( 'description' ),
 				'categories'      => $this->get_categories_with_links(),
 				'current_user'    => wp_get_current_user()

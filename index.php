@@ -1,6 +1,6 @@
 <?php get_header(); ?>
-<div>
-    <main id="postsContainer" class="<?php Theme_Helpers::get_class( 'card-columns', '' ); ?>">
+<main id="postsContainer" class="<?php Theme_Helpers::get_class( 'card-columns', '' ); ?>">
+    <div id="rendered-php">
 		<?php if ( have_posts() ) : ?>
 			<?php while ( have_posts() ) : the_post(); ?>
                 <article <?php post_class( Theme_Helpers::get_class( 'card archive', 'card single w-75', false ) ); ?>>
@@ -22,7 +22,7 @@
 		<?php else : ?>
             There doesn't seem to be anything here...
 		<?php endif; ?>
-    </main>
-    <div class="navigation"><p><?php posts_nav_link(); ?></p></div>
-</div>
+        <div class="navigation"><p><?php posts_nav_link(); ?></p></div>
+    </div>
+</main>
 <?php get_footer(); ?>

@@ -1,3 +1,8 @@
+/* Prevents FOUC */
+.js #rendered-php {
+	display: none;
+}
+
 @import "pieces/transitions";
 @import "pieces/global";
 @import "pieces/article";
