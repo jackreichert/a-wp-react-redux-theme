@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 
-import posts from './posts_reducer';
-import menu from './menu_reducer';
-import tags from './tag_reducer';
-import cat from './cat_reducer';
-import comments from './comments_reducer';
-import routerMatch from './routerMatch_reducer';
+import posts from './posts-reducer';
+import menu from './menu-reducer';
+import tags from './tag-reducer';
+import cat from './cat-reducer';
+import comments from './comments-reducer';
+import routerMatch from './routerMatch-reducer';
 
 export default combineReducers({
     posts,

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import Article from './main/article';
-import PageNav from '../containers/parts/pageNav';
+import PageNav from '../containers/parts/page-nav';
 
 class Main extends Component {
     componentWillUpdate() {

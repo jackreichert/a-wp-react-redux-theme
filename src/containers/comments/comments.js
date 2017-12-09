@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {fetchComments} from '../../actions';
 
 import Comment from '../../components/main/article/comment';
-import CommentForm from './commentForm';
+import CommentForm from './comment-form';
 
 class Comments extends Component {
     componentWillMount() {
