@@ -24,6 +24,11 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 - Dynamic Head title tag
 
 
+## How do I run Webpack?
+- run `npm install`, or `yarn`
+- run `webpack` or `webpack -p` (to minify)
+
+
 ## To Do
 - Widgets
 - Static home page
@@ -35,6 +40,6 @@ If you install it in WordPress v4.7 or greater **it will work out of the box** a
 ![it looks like this](screenshot.png)
 
 ## Want to help out?
-Or do you just want to use it yourself? Be my guest. 
-I'd love to see it out in the wild, so please share how you're using it. 
+Or do you just want to use it yourself? Be my guest.
+I'd love to see it out in the wild, so please share how you're using it.
 Sooner than later you'll see a live version on my site, so keep watch for it.
