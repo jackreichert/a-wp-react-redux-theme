@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import { bindActionCreators } from 'redux'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchMenu} from '../../actions';
 
 class Menu extends Component {
-    componentWillMount() {
-        this.props.fetchMenu(this.props.name);
+    componentDidMount () {
+        this.props.actions.fetchMenu(this.props.name);
     }
 
     shouldComponentUpdate(nextProps) {
@@ -53,7 +54,13 @@ class Menu extends Component {
 }
 
 function mapStateToProps({menu}) {
-    return {menu};
+    return menu;
 }
 
-export default connect(mapStateToProps, {fetchMenu})(Menu);
+function mapDispatchToProps(dispatch)  {
+    return {
+        actions: bindActionCreators({fetchMenu}, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
