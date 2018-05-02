@@ -1,5 +1,5 @@
 <?php
-
+include_once 'lib/theme-helpers.php';
 include_once 'lib/theme-enqueue.php';
 include_once 'lib/theme-endpoints.php';
 include_once 'lib/theme-support.php';

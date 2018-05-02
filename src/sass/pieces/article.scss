@@ -1,19 +1,22 @@
 @import "comments";
 
 article {
-  &.archive {
-    h1 {
-      font-size: 2rem;
-    }
-  }
-  &.single {
-    margin: 1em auto;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  .card-block {
-    padding: 1rem;
-  }
+	&.archive {
+		h1 {
+			font-size: 2rem;
+		}
+	}
+	&.single {
+		margin: 1em auto;
+	}
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+	.card-block {
+		padding: 1rem;
+	}
+	&.empty {
+		height: 30rem;
+	}
 }
