@@ -45,6 +45,7 @@ class Menu extends Component {
     }
 
     render() {
+        console.log("MENU",this.props)
         return (
             <ul className={this.getClasses(this.props.menu.name)}>
                 {this.renderMenu(this.props.menu)}
@@ -54,7 +55,7 @@ class Menu extends Component {
 }
 
 function mapStateToProps({menu}) {
-    return menu;
+    return {menu};
 }
 
 function mapDispatchToProps(dispatch)  {
