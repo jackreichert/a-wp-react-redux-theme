@@ -15,7 +15,8 @@ import {routerMiddleware, connectRouter, ConnectedRouter} from 'connected-react-
 
 import rootReducer from './reducers';
 
-const history = createBrowserHistory();
+const siteBaseUrl = RT_API.baseUrl.replace(['http://','https://'],'').replace(window.location.origin.replace(['http://','https://'],''), '');
+const history = createBrowserHistory({basename: siteBaseUrl});
 const store = createStore(
 	connectRouter(history)(rootReducer),
 	compose(
