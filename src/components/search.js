@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 
+import {SITEBASE} from '../actions';
+
 class Search extends Component {
     componentDidMount() {
         if ( this.props.isSearch) {
@@ -15,9 +17,9 @@ class Search extends Component {
         event.preventDefault();
         const searchTerm = event.target.value;
         if (0 < searchTerm.length) {
-            this.props.history.push(`/search/${searchTerm}`);
+            this.props.history.push(`${SITEBASE}/search/${searchTerm}`);
         } else {
-            this.props.history.push('/');
+            this.props.history.push(`${SITEBASE}/`);
         }
     }
 

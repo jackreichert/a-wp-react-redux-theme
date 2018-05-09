@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const SITEBASE = RT_API.baseUrl.replace(['http://','https://'],'').replace(window.location.origin.replace(['http://','https://'],''), '');
+
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
