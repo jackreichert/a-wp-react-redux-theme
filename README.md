@@ -1,9 +1,6 @@
 # A React+Redux WordPress theme
 WordPress theme built with react calling WP-API for content.
 
-## Live Demo
-[It's now the live theme on my personal site.](http://www.jackreichert.com/)
-
 ## Why?
 I wanted to play with the shiny new WP-REST-API, explore es6 and transpiling, and finally work on a full project using React+Redux.
 I wrote a bit about the journey [on my blog](https://www.jackreichert.com/2017/01/developing-a-theme-for-wordpress-using-reactjs-redux-and-the-wp-rest-api/).
@@ -11,6 +8,8 @@ I'll update more about the process as I complete the *To Do* list below.
 
 ## Current Features
 If you install it in WordPress v4.7 or greater **it will work out of the box** and have many of the features you'd want in a simple blog.
+
+(Almost) out of the box, note: you need to enable pretty permalinks...
 
 **Existing features include:**
 - Dynamic menus (main menu + footer menu)
